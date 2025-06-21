@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Dat Ve Xe</string>
+    <string name="ten_dang_nhap">Tên đăng nhập</string>
+    <string name="mat_khau">Mật khẩu</string>
+    <string name="dang_ky_ngay">Đăng ký ngay</string>
+    <string name="chua_co_tai_khoan">Chưa có tài khoản?</string>
+    <string name="quen_mat_khau">Quên mật khẩu?</string>
+    <string name="DANG_NHAP">ĐĂNG NHẬP</string>
+    <string name="chao_mung_tro_lai">Chào mừng trở lại!</string>
+    <string name="dang_nhap_de_tiep_tuc">Đăng nhập để tiếp tục</string>
 </resources>
