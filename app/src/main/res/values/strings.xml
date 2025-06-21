@@ -8,4 +8,6 @@
     <string name="DANG_NHAP">ĐĂNG NHẬP</string>
     <string name="chao_mung_tro_lai">Chào mừng trở lại!</string>
     <string name="dang_nhap_de_tiep_tuc">Đăng nhập để tiếp tục</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
