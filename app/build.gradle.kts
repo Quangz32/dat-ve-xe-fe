@@ -45,6 +45,17 @@ dependencies {
     implementation("com.google.android.material:material:1.10.0")
     implementation("androidx.viewpager2:viewpager2:1.0.0")
 
+    // Lombok
+    compileOnly("org.projectlombok:lombok:1.18.30")
+    annotationProcessor("org.projectlombok:lombok:1.18.30")
+
+    // Gson for JSON serialization
+    implementation("com.google.code.gson:gson:2.10.1")
+
+    // Validation annotations
+    implementation("javax.validation:validation-api:2.0.1.Final")
+    annotationProcessor("javax.validation:validation-api:2.0.1.Final")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
