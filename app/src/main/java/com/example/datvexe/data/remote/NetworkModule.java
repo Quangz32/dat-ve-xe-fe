@@ -1,5 +1,6 @@
 package com.example.datvexe.data.remote;
 
+import com.example.datvexe.data.remote.api.AuthApiService;
 import com.example.datvexe.data.remote.api.BookingApiService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -46,5 +47,9 @@ public class NetworkModule {
 
     public static BookingApiService getBookingApiService() {
         return getRetrofitInstance().create(BookingApiService.class);
+    }
+
+    public static AuthApiService getAuthApiService() {
+        return getRetrofitInstance().create(AuthApiService.class);
     }
 } 

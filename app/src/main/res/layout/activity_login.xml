@@ -63,6 +63,7 @@
                 app:startIconDrawable="@drawable/baseline_person_24">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etUsername"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/ten_dang_nhap"
@@ -78,6 +79,7 @@
                 app:startIconDrawable="@drawable/baseline_lock_outline_24">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/mat_khau"
@@ -108,6 +110,16 @@
                 android:text="@string/DANG_NHAP"
                 android:textColor="@android:color/white"
                 android:textStyle="bold" />
+
+            <!-- Loading Progress Bar -->
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:visibility="gone" />
 
             <!-- Đăng ký -->
             <TextView

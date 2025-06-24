@@ -2,6 +2,9 @@ package com.example.datvexe.presentation.screens.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,11 +12,17 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.datvexe.data.remote.NetworkModule;
+import com.example.datvexe.data.repository.AuthRepositoryImpl;
 import com.example.datvexe.databinding.ActivityLoginBinding;
+import com.example.datvexe.domain.repository.AuthRepository;
+import com.example.datvexe.domain.usecase.LoginUseCase;
+import com.example.datvexe.presentation.viewmodel.LoginViewModel;
 
 public class LoginActivity extends AppCompatActivity {
 
     private ActivityLoginBinding viewBinding;
+    private LoginViewModel loginViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,9 +38,61 @@ public class LoginActivity extends AppCompatActivity {
 
         setContentView(viewBinding.getRoot());
 
-        viewBinding.btnLogin.setOnClickListener(v -> {
-            startActivity(new Intent(this, MainActivity.class));
+        setupViewModel();
+        setupObservers();
+        setupClickListeners();
+    }
+
+    private void setupViewModel() {
+        // Khởi tạo dependencies theo Clean Architecture
+        AuthRepository authRepository = new AuthRepositoryImpl(
+                NetworkModule.getAuthApiService(), 
+                this
+        );
+        LoginUseCase loginUseCase = new LoginUseCase(authRepository);
+        loginViewModel = new LoginViewModel(loginUseCase);
+    }
+
+    private void setupObservers() {
+        // Quan sát trạng thái loading
+        loginViewModel.isLoading.observe(this, isLoading -> {
+            if (isLoading) {
+                viewBinding.progressBar.setVisibility(View.VISIBLE);
+                viewBinding.btnLogin.setEnabled(false);
+            } else {
+                viewBinding.progressBar.setVisibility(View.GONE);
+                viewBinding.btnLogin.setEnabled(true);
+            }
         });
-//        setSupportActionBar(viewBinding.toolbar);
+
+        // Quan sát kết quả đăng nhập
+        loginViewModel.loginResult.observe(this, loginResult -> {
+            if (loginResult != null && loginResult.isSuccess()) {
+                Toast.makeText(this, loginResult.getMessage(), Toast.LENGTH_SHORT).show();
+                // Chuyển sang MainActivity
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        // Quan sát lỗi
+        loginViewModel.errorMessage.observe(this, errorMessage -> {
+            if (errorMessage != null) {
+                Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
+                loginViewModel.clearErrorMessage();
+            }
+        });
+    }
+
+    private void setupClickListeners() {
+        viewBinding.btnLogin.setOnClickListener(v -> {
+            String username = viewBinding.etUsername.getText().toString().trim();
+            String password = viewBinding.etPassword.getText().toString().trim();
+
+            Log.d("LoginActivity", "Username: " + username + ", Password: " + password);
+            loginViewModel.login(username, password);
+        });
     }
 }
