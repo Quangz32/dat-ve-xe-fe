@@ -1,14 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".presentation.screens.fragments.BookingFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:text="booking fragment" />
 
-</FrameLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Danh sách vé đã đặt"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Có lỗi xảy ra"
+        android:textAlignment="center"
+        android:textColor="@android:color/holo_red_dark"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_empty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Không có vé nào được tìm thấy"
+        android:textAlignment="center"
+        android:visibility="gone" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_bookings"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        tools:listitem="@layout/item_booking" />
+
+</LinearLayout>

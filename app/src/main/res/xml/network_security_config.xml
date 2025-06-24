@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true" />
+</network-security-config>
+
+    <!--<?xml version="1.0" encoding="utf-8"?>-->
+    <!--<network-security-config>-->
+    <!--&lt;!&ndash;    <domain-config cleartextTrafficPermitted="true">&ndash;&gt;-->
+    <!--&lt;!&ndash;        <domain includeSubdomains="true">http://10.0.2.2</domain>&ndash;&gt;-->
+    <!--&lt;!&ndash;    </domain-config>&ndash;&gt;-->
+    <!--    android:networkSecurityConfig="@xml/network_security_config"-->
+
+    <!--</network-security-config>-->
