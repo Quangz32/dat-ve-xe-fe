@@ -5,7 +5,8 @@ public class LoginResponseDto {
     private String message;
     private String data; // Token
 
-    public LoginResponseDto() {}
+    public LoginResponseDto() {
+    }
 
     public LoginResponseDto(int status, String message, String data) {
         this.status = status;

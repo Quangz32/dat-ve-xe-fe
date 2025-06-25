@@ -5,10 +5,13 @@ import com.example.datvexe.domain.repository.BookingRepository;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class GetBookingByUserIdUseCase {
 
     private final BookingRepository bookingRepository;
 
+    @Inject
     public GetBookingByUserIdUseCase(BookingRepository bookingRepository) {
         this.bookingRepository = bookingRepository;
     }

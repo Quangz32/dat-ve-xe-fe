@@ -11,14 +11,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 
-import com.example.datvexe.data.remote.NetworkModule;
-import com.example.datvexe.data.repository.AuthRepositoryImpl;
 import com.example.datvexe.databinding.ActivityLoginBinding;
-import com.example.datvexe.domain.repository.AuthRepository;
-import com.example.datvexe.domain.usecase.LoginUseCase;
 import com.example.datvexe.presentation.viewmodel.LoginViewModel;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class LoginActivity extends AppCompatActivity {
 
     private ActivityLoginBinding viewBinding;
@@ -44,13 +44,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void setupViewModel() {
-        // Khởi tạo dependencies theo Clean Architecture
-        AuthRepository authRepository = new AuthRepositoryImpl(
-                NetworkModule.getAuthApiService(), 
-                this
-        );
-        LoginUseCase loginUseCase = new LoginUseCase(authRepository);
-        loginViewModel = new LoginViewModel(loginUseCase);
+        // Khởi tạo ViewModel thông qua Hilt injection
+        loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
     }
 
     private void setupObservers() {

@@ -1,7 +1,6 @@
 package com.example.datvexe.data.repository;
 
 import com.example.datvexe.data.mapper.BookingMapper;
-import com.example.datvexe.data.remote.NetworkModule;
 import com.example.datvexe.data.remote.api.BookingApiService;
 import com.example.datvexe.data.remote.dto.ApiResponse;
 import com.example.datvexe.data.remote.dto.BookingResponseDto;
@@ -9,6 +8,8 @@ import com.example.datvexe.domain.model.BookingTrip;
 import com.example.datvexe.domain.repository.BookingRepository;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -18,8 +19,9 @@ public class BookingRepositoryImpl implements BookingRepository {
 
     private final BookingApiService apiService;
 
-    public BookingRepositoryImpl() {
-        this.apiService = NetworkModule.getBookingApiService();
+    @Inject
+    public BookingRepositoryImpl(BookingApiService apiService) {
+        this.apiService = apiService;
     }
 
     @Override

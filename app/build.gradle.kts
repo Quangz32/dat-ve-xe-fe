@@ -1,5 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
+    id("com.google.devtools.ksp")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -71,6 +73,14 @@ dependencies {
 
     // CardView
     implementation("androidx.cardview:cardview:1.0.0")
+
+    // Hilt
+    implementation("com.google.dagger:hilt-android:2.56.2")
+    annotationProcessor("com.google.dagger:hilt-compiler:2.56.2")
+
+    // Hilt ViewModel (thay thế cho hilt-lifecycle-viewmodel deprecated)
+    implementation("androidx.hilt:hilt-navigation-fragment:1.0.0")
+    annotationProcessor("androidx.hilt:hilt-compiler:1.0.0")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)

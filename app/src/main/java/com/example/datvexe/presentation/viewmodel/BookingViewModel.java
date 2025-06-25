@@ -6,12 +6,16 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.datvexe.data.repository.BookingRepositoryImpl;
 import com.example.datvexe.domain.model.BookingTrip;
 import com.example.datvexe.domain.usecase.GetBookingByUserIdUseCase;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.lifecycle.HiltViewModel;
+
+@HiltViewModel
 public class BookingViewModel extends ViewModel {
     private final GetBookingByUserIdUseCase getBookingByUserIdUseCase;
 
@@ -24,10 +28,9 @@ public class BookingViewModel extends ViewModel {
     private final MutableLiveData<String> _error = new MutableLiveData<>();
     public final LiveData<String> error = _error;
 
-    public BookingViewModel() {
-        // Dependency injection tạm thời - trong thực tế nên dùng DI framework
-        BookingRepositoryImpl repository = new BookingRepositoryImpl();
-        this.getBookingByUserIdUseCase = new GetBookingByUserIdUseCase(repository);
+    @Inject
+    public BookingViewModel(GetBookingByUserIdUseCase getBookingByUserIdUseCase) {
+        this.getBookingByUserIdUseCase = getBookingByUserIdUseCase;
     }
 
     public void loadBookings(String userId) {

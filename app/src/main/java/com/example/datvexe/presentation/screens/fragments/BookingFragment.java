@@ -20,7 +20,9 @@ import com.example.datvexe.presentation.viewmodel.BookingViewModel;
 
 import java.util.List;
 
+import dagger.hilt.android.AndroidEntryPoint;
 
+@AndroidEntryPoint
 public class BookingFragment extends Fragment {
 
     // Tạm thời hardcode userId - trong thực tế sẽ lấy từ SharedPreferences hoặc Session

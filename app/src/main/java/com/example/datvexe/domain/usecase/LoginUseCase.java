@@ -3,9 +3,12 @@ package com.example.datvexe.domain.usecase;
 import com.example.datvexe.domain.model.LoginResult;
 import com.example.datvexe.domain.repository.AuthRepository;
 
+import javax.inject.Inject;
+
 public class LoginUseCase {
     private AuthRepository authRepository;
 
+    @Inject
     public LoginUseCase(AuthRepository authRepository) {
         this.authRepository = authRepository;
     }
@@ -36,6 +39,7 @@ public class LoginUseCase {
 
     public interface LoginCallback {
         void onSuccess(LoginResult result);
+
         void onError(String error);
     }
 } 
