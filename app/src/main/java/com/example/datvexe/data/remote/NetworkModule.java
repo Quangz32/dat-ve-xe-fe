@@ -1,7 +1,7 @@
 package com.example.datvexe.data.remote;
 
-import com.example.datvexe.data.remote.api.AuthApiService;
-import com.example.datvexe.data.remote.api.BookingApiService;
+import com.example.datvexe.data.remote.api.service.AuthApiService;
+import com.example.datvexe.data.remote.api.service.BookingApiService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 

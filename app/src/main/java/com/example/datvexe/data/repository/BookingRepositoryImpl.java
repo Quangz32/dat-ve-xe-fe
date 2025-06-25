@@ -1,7 +1,7 @@
 package com.example.datvexe.data.repository;
 
 import com.example.datvexe.data.mapper.BookingMapper;
-import com.example.datvexe.data.remote.api.BookingApiService;
+import com.example.datvexe.data.remote.api.service.BookingApiService;
 import com.example.datvexe.data.remote.dto.ApiResponse;
 import com.example.datvexe.data.remote.dto.BookingResponseDto;
 import com.example.datvexe.domain.model.BookingTrip;

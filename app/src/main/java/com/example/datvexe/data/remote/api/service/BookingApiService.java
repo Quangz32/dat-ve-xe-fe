@@ -1,4 +1,4 @@
-package com.example.datvexe.data.remote.api;
+package com.example.datvexe.data.remote.api.service;
 
 import com.example.datvexe.data.remote.dto.ApiResponse;
 import com.example.datvexe.data.remote.dto.BookingResponseDto;
