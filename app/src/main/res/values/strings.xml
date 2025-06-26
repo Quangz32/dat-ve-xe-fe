@@ -8,6 +8,17 @@
     <string name="DANG_NHAP">ĐĂNG NHẬP</string>
     <string name="chao_mung_tro_lai">Chào mừng trở lại!</string>
     <string name="dang_nhap_de_tiep_tuc">Đăng nhập để tiếp tục</string>
+    <!-- Register strings -->
+    <string name="tao_tai_khoan_moi">Tạo tài khoản mới</string>
+    <string name="dang_ky_de_trai_nghiem_dich_vu">Đăng ký để trải nghiệm dịch vụ</string>
+    <string name="ho_va_ten">Họ và tên</string>
+    <string name="email">Email</string>
+    <string name="so_dien_thoai">Số điện thoại</string>
+    <string name="nhap_lai_mat_khau">Nhập lại mật khẩu</string>
+    <string name="DANG_KY">ĐĂNG KÝ</string>
+    <string name="da_co_tai_khoan">Đã có tài khoản?</string>
+    <string name="dang_nhap_ngay">Đăng nhập ngay</string>
+    <string name="toi_dong_y_voi_dieu_khoan_dich_vu">Tôi đồng ý với điều khoản dịch vụ</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

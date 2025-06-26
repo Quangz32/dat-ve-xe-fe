@@ -22,7 +22,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.screens.activities.LoginActivity"
+            android:name=".presentation.screens.activities.AuthActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,14 +31,11 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".presentation.screens.activities.LoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".presentation.screens.activities.MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="false" />
     </application>
 
 </manifest>

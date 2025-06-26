@@ -24,7 +24,7 @@ public class LoginUseCase {
             return;
         }
 
-        authRepository.login(username, password, new AuthRepository.AuthCallback() {
+        authRepository.login(username, password, new AuthRepository.LoginCallback() {
             @Override
             public void onSuccess(LoginResult result) {
                 callback.onSuccess(result);

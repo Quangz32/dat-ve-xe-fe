@@ -12,6 +12,7 @@ import com.example.datvexe.domain.repository.AuthRepository;
 import com.example.datvexe.domain.repository.BookingRepository;
 import com.example.datvexe.domain.usecase.GetBookingByUserIdUseCase;
 import com.example.datvexe.domain.usecase.LoginUseCase;
+import com.example.datvexe.domain.usecase.RegisterUseCase;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -33,6 +34,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @InstallIn(SingletonComponent.class)
 public class AppModule {
 
+//    private static final String BASE_URL = "http://localhost:9999/";
     private static final String BASE_URL = "http://10.0.2.2:9999/";
 
     @Provides
@@ -115,6 +117,11 @@ public class AppModule {
     @Provides
     public LoginUseCase provideLoginUseCase(AuthRepository authRepository) {
         return new LoginUseCase(authRepository);
+    }
+
+    @Provides
+    public RegisterUseCase provideRegisterUseCase(AuthRepository authRepository) {
+        return new RegisterUseCase(authRepository);
     }
 
     @Provides

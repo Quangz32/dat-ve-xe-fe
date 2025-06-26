@@ -1,4 +1,4 @@
-package com.example.datvexe.data.remote.dto;
+package com.example.datvexe.domain.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginResponseDto {
-    private int status;
+public class RegisterResult {
+    private boolean isSuccess;
     private String message;
-    private String data; // Token
+    private User user;
 }
