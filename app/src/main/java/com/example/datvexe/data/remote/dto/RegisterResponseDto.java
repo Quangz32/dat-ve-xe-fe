@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 public class RegisterResponseDto {
     private int status;
     private String message;
-//    private boolean success;
+    //    private boolean success;
     private UserDto user;
 }

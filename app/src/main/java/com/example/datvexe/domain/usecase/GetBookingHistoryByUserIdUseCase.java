@@ -1,0 +1,43 @@
+package com.example.datvexe.domain.usecase;
+
+import com.example.datvexe.domain.model.BookingTrip;
+import com.example.datvexe.domain.repository.BookingRepository;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
+public class GetBookingHistoryByUserIdUseCase {
+
+    private final BookingRepository bookingRepository;
+
+    @Inject
+    public GetBookingHistoryByUserIdUseCase(BookingRepository bookingRepository) {
+        this.bookingRepository = bookingRepository;
+    }
+
+    public void execute(String userId, UseCaseCallback callback) {
+        if (userId == null || userId.trim().isEmpty()) {
+            callback.onError("User ID không được để trống");
+            return;
+        }
+
+        bookingRepository.getBookingsHistoryByUserId(userId, new BookingRepository.BookingCallback() {
+            @Override
+            public void onSuccess(List<BookingTrip> bookings) {
+                callback.onSuccess(bookings);
+            }
+
+            @Override
+            public void onError(String error) {
+                callback.onError(error);
+            }
+        });
+    }
+
+    public interface UseCaseCallback {
+        void onSuccess(List<BookingTrip> bookings);
+
+        void onError(String error);
+    }
+}

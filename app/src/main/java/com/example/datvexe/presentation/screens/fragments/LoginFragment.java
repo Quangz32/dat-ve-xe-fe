@@ -29,7 +29,7 @@ public class LoginFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-            @Nullable Bundle savedInstanceState) {
+                             @Nullable Bundle savedInstanceState) {
         viewBinding = FragmentLoginBinding.inflate(inflater, container, false);
         return viewBinding.getRoot();
     }
@@ -41,6 +41,9 @@ public class LoginFragment extends Fragment {
         setupViewModel();
         setupObservers();
         setupClickListeners();
+
+        //Auto login
+        loginViewModel.login("quang", "123123qq");
     }
 
     private void setupViewModel() {

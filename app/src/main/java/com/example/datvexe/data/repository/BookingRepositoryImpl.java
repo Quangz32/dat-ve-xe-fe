@@ -52,4 +52,34 @@ public class BookingRepositoryImpl implements BookingRepository {
             }
         });
     }
+
+    @Override
+    public void getBookingsHistoryByUserId(String userId, BookingRepository.BookingCallback callback) {
+        Call<ApiResponse<List<BookingResponseDto>>> call = apiService.getBookingsHistoryByUserId(userId);
+
+        call.enqueue(new Callback<ApiResponse<List<BookingResponseDto>>>() {
+            @Override
+            public void onResponse(Call<ApiResponse<List<BookingResponseDto>>> call,
+                                   Response<ApiResponse<List<BookingResponseDto>>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    ApiResponse<List<BookingResponseDto>> apiResponse = response.body();
+
+                    if (apiResponse.getStatus() == 200 && apiResponse.getData() != null) {
+                        List<BookingTrip> bookings = BookingMapper.toDomainModelList(apiResponse.getData());
+                        callback.onSuccess(bookings);
+                    } else {
+                        callback.onError("API Error: " + apiResponse.getMessage());
+                    }
+                } else {
+                    callback.onError("Network Error: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse<List<BookingResponseDto>>> call, Throwable t) {
+                callback.onError("Network Failure: " + t.getMessage());
+            }
+        });
+    }
+
 } 

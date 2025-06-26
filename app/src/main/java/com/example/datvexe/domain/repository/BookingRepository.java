@@ -8,6 +8,8 @@ public interface BookingRepository {
 
     void getBookingsByUserId(String userId, BookingCallback callback);
 
+    void getBookingsHistoryByUserId(String userId, BookingCallback callback);
+
     interface BookingCallback {
         void onSuccess(List<BookingTrip> bookings);
 

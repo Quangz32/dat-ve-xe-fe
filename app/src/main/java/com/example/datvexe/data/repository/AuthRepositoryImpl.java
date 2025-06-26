@@ -23,8 +23,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AuthRepositoryImpl implements AuthRepository {
-    private AuthApiService authApiService;
-    private SharedPreferencesManager sharedPreferencesManager;
+    private final AuthApiService authApiService;
+    private final SharedPreferencesManager sharedPreferencesManager;
 
     @Inject
     public AuthRepositoryImpl(AuthApiService authApiService, SharedPreferencesManager sharedPreferencesManager) {

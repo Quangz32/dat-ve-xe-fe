@@ -13,4 +13,8 @@ public interface BookingApiService {
 
     @GET("booking/user/{userId}")
     Call<ApiResponse<List<BookingResponseDto>>> getBookingsByUserId(@Path("userId") String userId);
+
+    @GET("booking/history/user/{userId}")
+    Call<ApiResponse<List<BookingResponseDto>>> getBookingsHistoryByUserId(@Path("userId") String userId);
+
 } 

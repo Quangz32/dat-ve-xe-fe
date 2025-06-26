@@ -40,6 +40,8 @@ public class BookingResponseDto {
 
     private String status;
 
+    private String reasonCancel;
+
     private String paymentMethod;
 
     private String transactionId;

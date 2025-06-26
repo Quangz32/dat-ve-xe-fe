@@ -6,7 +6,7 @@ import com.example.datvexe.domain.repository.AuthRepository;
 import javax.inject.Inject;
 
 public class LoginUseCase {
-    private AuthRepository authRepository;
+    private final AuthRepository authRepository;
 
     @Inject
     public LoginUseCase(AuthRepository authRepository) {

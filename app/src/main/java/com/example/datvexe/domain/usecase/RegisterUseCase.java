@@ -14,7 +14,7 @@ public class RegisterUseCase {
     }
 
     public void execute(String username, String password, String email, String fullname, String phone,
-            RegisterCallback callback) {
+                        RegisterCallback callback) {
         // Validate input
         if (username == null || username.trim().isEmpty()) {
             callback.onError("Tên đăng nhập không được để trống");

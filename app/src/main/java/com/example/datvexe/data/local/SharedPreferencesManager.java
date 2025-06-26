@@ -8,8 +8,8 @@ public class SharedPreferencesManager {
     private static final String KEY_TOKEN = "auth_token";
     private static final String KEY_IS_LOGGED_IN = "is_logged_in";
 
-    private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor editor;
+    private final SharedPreferences sharedPreferences;
+    private final SharedPreferences.Editor editor;
 
     public SharedPreferencesManager(Context context) {
         sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
