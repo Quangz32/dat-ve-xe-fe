@@ -40,9 +40,7 @@ public class Notification {
     // Enum cho các loại tab
     public enum NotificationTab {
         EVENTS("events"),
-        PROMOTIONS("promotions"),
-        BOOKING("booking"),
-        SYSTEM("system");
+        PROMOTIONS("promotions");
 
         private final String value;
 

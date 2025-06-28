@@ -6,11 +6,15 @@ import com.example.datvexe.data.local.SharedPreferencesManager;
 import com.example.datvexe.data.remote.api.interceptor.AuthInterceptor;
 import com.example.datvexe.data.remote.api.service.AuthApiService;
 import com.example.datvexe.data.remote.api.service.BookingApiService;
+import com.example.datvexe.data.remote.api.service.NotificationApiService;
 import com.example.datvexe.data.repository.AuthRepositoryImpl;
 import com.example.datvexe.data.repository.BookingRepositoryImpl;
+import com.example.datvexe.data.repository.NotificationRepositoryImpl;
 import com.example.datvexe.domain.repository.AuthRepository;
 import com.example.datvexe.domain.repository.BookingRepository;
+import com.example.datvexe.domain.repository.NotificationRepository;
 import com.example.datvexe.domain.usecase.GetBookingByUserIdUseCase;
+import com.example.datvexe.domain.usecase.GetNotificationUseCase;
 import com.example.datvexe.domain.usecase.LoginUseCase;
 import com.example.datvexe.domain.usecase.RegisterUseCase;
 import com.google.gson.Gson;
@@ -98,13 +102,20 @@ public class AppModule {
 
     @Provides
     @Singleton
+    public NotificationApiService provideNotificationApiService(Retrofit retrofit) {
+        return retrofit.create(NotificationApiService.class);
+    }
+
+    @Provides
+    @Singleton
     public SharedPreferencesManager provideSharedPreferencesManager(@ApplicationContext Context context) {
         return new SharedPreferencesManager(context);
     }
 
     @Provides
     @Singleton
-    public AuthRepository provideAuthRepository(AuthApiService authApiService, SharedPreferencesManager sharedPreferencesManager) {
+    public AuthRepository provideAuthRepository(AuthApiService authApiService,
+                                                SharedPreferencesManager sharedPreferencesManager) {
         return new AuthRepositoryImpl(authApiService, sharedPreferencesManager);
     }
 
@@ -112,6 +123,12 @@ public class AppModule {
     @Singleton
     public BookingRepository provideBookingRepository(BookingApiService bookingApiService) {
         return new BookingRepositoryImpl(bookingApiService);
+    }
+
+    @Provides
+    @Singleton
+    public NotificationRepository provideNotificationRepository(NotificationApiService apiService) {
+        return new NotificationRepositoryImpl(apiService);
     }
 
     @Provides
@@ -125,7 +142,14 @@ public class AppModule {
     }
 
     @Provides
-    public GetBookingByUserIdUseCase provideGetBookingByUserIdUseCase(BookingRepository bookingRepository) {
+    public GetBookingByUserIdUseCase provideGetBookingByUserIdUseCase(
+            BookingRepository bookingRepository) {
         return new GetBookingByUserIdUseCase(bookingRepository);
+    }
+
+    @Provides
+    public GetNotificationUseCase provideGetNotificationUseCase(
+            NotificationRepository notificationRepository) {
+        return new GetNotificationUseCase(notificationRepository);
     }
 }
