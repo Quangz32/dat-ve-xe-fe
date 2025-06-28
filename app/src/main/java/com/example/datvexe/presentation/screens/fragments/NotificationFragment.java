@@ -6,14 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.datvexe.R;
 import com.example.datvexe.databinding.FragmentNotificationBinding;
 import com.example.datvexe.domain.model.Notification;
 import com.example.datvexe.presentation.adapter.NotificationAdapter;
@@ -21,7 +18,6 @@ import com.example.datvexe.presentation.viewmodel.NotificationViewModel;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.List;
-import java.util.Objects;
 
 import dagger.hilt.android.AndroidEntryPoint;
 

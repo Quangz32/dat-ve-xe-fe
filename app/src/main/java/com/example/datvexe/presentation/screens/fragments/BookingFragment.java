@@ -1,12 +1,10 @@
 package com.example.datvexe.presentation.screens.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,10 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.datvexe.databinding.FragmentBookingBinding;
 import com.example.datvexe.domain.model.BookingTrip;
 import com.example.datvexe.presentation.adapter.BookingAdapter;
+import com.example.datvexe.presentation.screens.activities.MainActivity;
 import com.example.datvexe.presentation.viewmodel.BookingViewModel;
 
 import java.util.List;
-import java.util.Objects;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -26,6 +24,7 @@ public class BookingFragment extends Fragment {
 
     // Tạm thời hardcode userId - trong thực tế sẽ lấy từ SharedPreferences hoặc Session
     private static final String USER_ID = "67a5a8bc040810b61bb8e672";
+    private final int TAB_INDEX = 1;
     private FragmentBookingBinding viewBinding;
 
     private BookingViewModel viewModel;
@@ -57,13 +56,23 @@ public class BookingFragment extends Fragment {
         viewModel.loadBookings(USER_ID);
         viewModel.loadHistoryBooking(USER_ID);
 
+        //
+        MainActivity mainActivity = (MainActivity) requireActivity();
+        mainActivity.setTabNavigateBackCallback(TAB_INDEX, () -> {
+            viewModel.toggleBookingHistory();
+            mainActivity.setShowOrHideNavigateBack(TAB_INDEX, false);
+            mainActivity.setActionBarTitle(TAB_INDEX, "Booking");
+        });
+
         return viewBinding.getRoot();
     }
 
     private void setupListener() {
         viewBinding.btnHistory.setOnClickListener(v -> {
             viewModel.toggleBookingHistory();
-            Log.d("history", Objects.requireNonNull(viewModel.bookingsHistory.getValue()).toString());
+            MainActivity mainActivity = (MainActivity) requireActivity();
+            mainActivity.setShowOrHideNavigateBack(TAB_INDEX, true);
+            mainActivity.setActionBarTitle(TAB_INDEX, "Lịch sử đặt xe");
         });
 
     }

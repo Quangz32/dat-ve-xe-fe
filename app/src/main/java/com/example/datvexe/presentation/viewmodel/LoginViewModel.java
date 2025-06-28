@@ -17,14 +17,12 @@ public class LoginViewModel extends ViewModel {
 
     // LiveData cho trạng thái loading
     private final MutableLiveData<Boolean> _isLoading = new MutableLiveData<>();
-    public LiveData<Boolean> isLoading = _isLoading;
-
     // LiveData cho kết quả đăng nhập
     private final MutableLiveData<LoginResult> _loginResult = new MutableLiveData<>();
-    public LiveData<LoginResult> loginResult = _loginResult;
-
     // LiveData cho lỗi
     private final MutableLiveData<String> _errorMessage = new MutableLiveData<>();
+    public LiveData<Boolean> isLoading = _isLoading;
+    public LiveData<LoginResult> loginResult = _loginResult;
     public LiveData<String> errorMessage = _errorMessage;
 
     @Inject

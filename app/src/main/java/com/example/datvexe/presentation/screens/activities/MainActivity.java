@@ -1,27 +1,28 @@
 package com.example.datvexe.presentation.screens.activities;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.datvexe.R;
 import com.example.datvexe.databinding.ActivityMainBinding;
 import com.example.datvexe.presentation.adapter.MainPagerAdapter;
+import com.example.datvexe.presentation.viewmodel.MainViewModel;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -32,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager2 viewPager;
     private TabLayout tabLayout;
     private Toolbar toolbar;
+
+    private MainViewModel viewModel;
+    private List<TabNavigateBackCallback> tabNavigateCallbacks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,10 +53,47 @@ public class MainActivity extends AppCompatActivity {
         tabLayout = viewBinding.tabLayout;
         toolbar = viewBinding.toolbar;
 
+        viewModel = new ViewModelProvider(this).get(MainViewModel.class);
+
         setupTabLayout();
         setupToolbar();
+        observeViewModel();
 
+        tabNavigateCallbacks = new ArrayList<>(Collections.nCopies(4, null));
 
+        //Bấm back ở Tab nào sẽ gọi tới Callback của tab đó
+        toolbar.setNavigationOnClickListener(v -> {
+            TabNavigateBackCallback callback = tabNavigateCallbacks.get(viewModel.getCurrentTabIndex());
+            if (callback != null) {
+                callback.onNavigateBack();
+            }
+        });
+    }
+
+    private void observeViewModel() {
+        viewModel.showNavigateBack.observe(this, booleans -> {
+            doShowOrHideNavigateBack(viewModel
+                    .getShowNavigateBack(tabLayout.getSelectedTabPosition()));
+        });
+
+        viewModel.tabTitles.observe(this, strings -> {
+            doChangeActionBarTitle(viewModel.getTabTitle(tabLayout.getSelectedTabPosition()));
+        });
+
+        viewModel.currentTabIndex.observe(this,
+                tabIndex -> {
+                    ActionBar actionBar = getSupportActionBar();
+                    if (actionBar == null) return;
+
+                    if (tabIndex == 0) {
+                        actionBar.hide();
+                    } else {
+                        actionBar.show();
+                        actionBar.setTitle(viewModel.getTabTitle(tabIndex));
+                        doShowOrHideNavigateBack(
+                                viewModel.getShowNavigateBack(tabIndex));
+                    }
+                });
     }
 
     private void setupToolbar() {
@@ -87,21 +128,8 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                ActionBar actionBar = getSupportActionBar();
-                if (actionBar == null) return;
+                viewModel.setCurrentTabIndex(tab.getPosition());
 
-                if (tab.getPosition() == 0) {
-                    actionBar.hide();
-                } else if (tab.getPosition() == 1) {
-                    actionBar.show();
-                    actionBar.setTitle("Booking");
-                } else if (tab.getPosition() == 2) {
-                    actionBar.show();
-                    actionBar.setTitle("Thông báo");
-                } else if (tab.getPosition() == 3){
-                    actionBar.show();
-                    actionBar.setTitle("Tài khoản");
-                }
             }
 
             @Override
@@ -116,10 +144,34 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(@Nullable View parent, @NonNull String name, @NonNull Context context, @NonNull AttributeSet attrs) {
-//        Objects.requireNonNull(getActionBar()).hide();
-        return super.onCreateView(parent, name, context, attrs);
+    public void doShowOrHideNavigateBack(boolean show) {
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(show);
     }
+
+    public void doChangeActionBarTitle(String title) {
+        Objects.requireNonNull(getSupportActionBar()).setTitle(title);
+    }
+
+    public void setShowOrHideNavigateBack(int tabIndex, boolean show) {
+        viewModel.setShowNavigateBack(tabIndex, show);
+    }
+
+    public void setActionBarTitle(int tabIndex, String title) {
+        viewModel.setTabTitles(tabIndex, title);
+    }
+
+    public int getCurrentTabIndex() {
+        return viewModel.getCurrentTabIndex();
+    }
+
+
+    public void setTabNavigateBackCallback(int tabIndex, TabNavigateBackCallback callback) {
+        tabNavigateCallbacks.set(tabIndex, callback);
+    }
+
+    public interface TabNavigateBackCallback {
+        void onNavigateBack();
+    }
+
+
 }

@@ -31,9 +31,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".presentation.screens.activities.LoginActivity"
-            android:exported="false" />
-        <activity
             android:name=".presentation.screens.activities.MainActivity"
             android:exported="false" />
     </application>
