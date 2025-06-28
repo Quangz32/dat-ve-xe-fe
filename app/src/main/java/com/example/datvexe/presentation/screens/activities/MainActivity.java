@@ -2,6 +2,7 @@ package com.example.datvexe.presentation.screens.activities;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.ActionBar;
@@ -10,6 +11,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager2 viewPager;
     private TabLayout tabLayout;
     private Toolbar toolbar;
+    private FrameLayout frameLayout;
 
     private MainViewModel viewModel;
     private List<TabNavigateBackCallback> tabNavigateCallbacks;
@@ -52,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager = viewBinding.pager;
         tabLayout = viewBinding.tabLayout;
         toolbar = viewBinding.toolbar;
+        frameLayout = viewBinding.frameLayout;
 
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
@@ -164,14 +168,27 @@ public class MainActivity extends AppCompatActivity {
         return viewModel.getCurrentTabIndex();
     }
 
-
     public void setTabNavigateBackCallback(int tabIndex, TabNavigateBackCallback callback) {
         tabNavigateCallbacks.set(tabIndex, callback);
+    }
+
+    public void navigateToMain() {
+        tabLayout.setVisibility(View.VISIBLE);
+        viewPager.setVisibility(View.VISIBLE);
+        frameLayout.setVisibility(View.GONE);
+    }
+
+    public void navigateToFragment(Fragment fragment) {
+        tabLayout.setVisibility(View.GONE);
+        viewPager.setVisibility(View.GONE);
+
+        frameLayout.setVisibility(View.VISIBLE);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frame_layout, fragment)
+                .commit();
     }
 
     public interface TabNavigateBackCallback {
         void onNavigateBack();
     }
-
-
 }
