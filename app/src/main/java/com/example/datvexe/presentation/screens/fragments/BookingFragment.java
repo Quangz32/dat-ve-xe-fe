@@ -49,7 +49,6 @@ public class BookingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         viewBinding = FragmentBookingBinding.inflate(inflater, container, false);
-        setupToolbar();
         setupRecyclerView();
         observeViewModel();
         setupListener();
@@ -67,16 +66,6 @@ public class BookingFragment extends Fragment {
             Log.d("history", Objects.requireNonNull(viewModel.bookingsHistory.getValue()).toString());
         });
 
-        viewBinding.toolbar.setNavigationOnClickListener(v -> {
-            viewModel.showBookings();
-        });
-    }
-
-    private void setupToolbar() {
-        // Thiết lập Toolbar
-        ((AppCompatActivity) Objects.requireNonNull(getActivity()))
-                .setSupportActionBar(viewBinding.toolbar);
-        viewBinding.toolbar.setTitle("Booking");
     }
 
     private void setupRecyclerView() {
@@ -105,16 +94,12 @@ public class BookingFragment extends Fragment {
 
     private void handleShowBookingsAndHistory(Boolean showHistory) {
         if (showHistory != null && showHistory) {
-            viewBinding.toolbar.setTitle("Lịch sử");
             viewBinding.btnHistory.setVisibility(View.GONE);
             viewBinding.cardVehicleType.setVisibility(View.GONE);
-            showOrHideBackBtnOnToolbar(true);
             showBookingsList(viewModel.bookingsHistory.getValue());
         } else {
-            viewBinding.toolbar.setTitle("Booking");
             viewBinding.btnHistory.setVisibility(View.VISIBLE);
             viewBinding.cardVehicleType.setVisibility(View.VISIBLE);
-            showOrHideBackBtnOnToolbar(false);
             showBookingsList(viewModel.bookings.getValue());
         }
     }
@@ -129,14 +114,6 @@ public class BookingFragment extends Fragment {
             viewBinding.rvBookings.setVisibility(View.GONE);
             viewBinding.tvEmpty.setVisibility(View.VISIBLE);
             viewBinding.tvError.setVisibility(View.GONE);
-        }
-    }
-
-    private void showOrHideBackBtnOnToolbar(boolean show) {
-        AppCompatActivity activity = (AppCompatActivity) getActivity();
-        if (activity != null) {
-            Objects.requireNonNull(activity.getSupportActionBar())
-                    .setDisplayHomeAsUpEnabled(show);
         }
     }
 

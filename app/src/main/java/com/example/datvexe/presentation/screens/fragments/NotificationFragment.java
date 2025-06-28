@@ -32,7 +32,6 @@ public class NotificationFragment extends Fragment {
 
     FragmentNotificationBinding view;
     TabLayout tabLayout;
-    Toolbar toolbar;
 
     RecyclerView recyclerView;
     NotificationAdapter promotionAdapter;
@@ -63,12 +62,6 @@ public class NotificationFragment extends Fragment {
         view = FragmentNotificationBinding.inflate(inflater, container, false);
 
         setupTabLayout();
-
-        // Khởi tạo Toolbar
-        toolbar = view.toolbar;
-        ((AppCompatActivity) Objects.requireNonNull(getActivity()))
-                .setSupportActionBar(toolbar);
-        toolbar.setTitle("Thông báo");
 
         // Khởi tạo ViewModel
         viewModel.loadNotifications(USER_ID);
