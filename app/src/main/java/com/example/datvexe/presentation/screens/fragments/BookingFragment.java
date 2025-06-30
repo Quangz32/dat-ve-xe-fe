@@ -24,7 +24,6 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class BookingFragment extends Fragment {
 
     // Tạm thời hardcode userId - trong thực tế sẽ lấy từ SharedPreferences hoặc Session
-    private static final String USER_ID = "67a5a8bc040810b61bb8e672";
     private final int TAB_INDEX = 1;
     private FragmentBookingBinding viewBinding;
 
@@ -54,8 +53,8 @@ public class BookingFragment extends Fragment {
         setupListener();
 
         // Load dữ liệu
-        viewModel.loadBookings(USER_ID);
-        viewModel.loadHistoryBooking(USER_ID);
+        viewModel.loadBookings();
+        viewModel.loadHistoryBooking();
 
         //
         MainActivity mainActivity = (MainActivity) requireActivity();

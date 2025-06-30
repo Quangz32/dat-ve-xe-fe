@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.datvexe.data.local.SharedPreferencesManager;
 import com.example.datvexe.domain.model.BookingTrip;
 import com.example.datvexe.domain.usecase.booking.GetBookingByUserIdUseCase;
 import com.example.datvexe.domain.usecase.booking.GetBookingHistoryByUserIdUseCase;
@@ -20,21 +21,18 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 public class BookingViewModel extends ViewModel {
     private final GetBookingByUserIdUseCase getBookingUC;
     private final GetBookingHistoryByUserIdUseCase getBookingHistoryUC;
-
     private final MutableLiveData<Boolean> _showHistory = new MutableLiveData<>(false);
     public final LiveData<Boolean> showHistory = _showHistory;
-
     private final MutableLiveData<List<BookingTrip>> _bookings = new MutableLiveData<>();
     public final LiveData<List<BookingTrip>> bookings = _bookings;
-
     private final MutableLiveData<List<BookingTrip>> _bookingsHistory = new MutableLiveData<>();
     public final LiveData<List<BookingTrip>> bookingsHistory = _bookingsHistory;
-
     private final MutableLiveData<Boolean> _isLoading = new MutableLiveData<>();
     public final LiveData<Boolean> isLoading = _isLoading;
-
     private final MutableLiveData<String> _error = new MutableLiveData<>();
     public final LiveData<String> error = _error;
+    @Inject
+    SharedPreferencesManager sharedPreferencesManager;
 
     @Inject
     public BookingViewModel(GetBookingByUserIdUseCase getBookingByUserIdUseCase,
@@ -43,10 +41,11 @@ public class BookingViewModel extends ViewModel {
         this.getBookingHistoryUC = getBookingHistoryByUserIdUseCase;
     }
 
-    public void loadBookings(String userId) {
+    public void loadBookings() {
         _isLoading.setValue(true);
         _error.setValue(null);
 
+        String userId = sharedPreferencesManager.getUserId();
         getBookingUC.execute(userId, new GetBookingByUserIdUseCase.UseCaseCallback() {
             @Override
             public void onSuccess(List<BookingTrip> bookings) {
@@ -63,10 +62,11 @@ public class BookingViewModel extends ViewModel {
         });
     }
 
-    public void loadHistoryBooking(String userId) {
+    public void loadHistoryBooking() {
         _isLoading.setValue(true);
         _error.setValue(null);
 
+        String userId = sharedPreferencesManager.getUserId();
         getBookingHistoryUC.execute(userId, new GetBookingHistoryByUserIdUseCase.UseCaseCallback() {
             @Override
             public void onSuccess(List<BookingTrip> bookings) {
@@ -83,8 +83,8 @@ public class BookingViewModel extends ViewModel {
         });
     }
 
-    public void refreshBookings(String userId) {
-        loadBookings(userId);
+    public void refreshBookings() {
+        loadBookings();
     }
 
     public void toggleBookingHistory() {

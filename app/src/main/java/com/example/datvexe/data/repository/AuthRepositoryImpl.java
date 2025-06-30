@@ -1,5 +1,9 @@
 package com.example.datvexe.data.repository;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import com.example.datvexe.data.local.SharedPreferencesManager;
 import com.example.datvexe.data.mapper.UserMapper;
 import com.example.datvexe.data.remote.api.service.AuthApiService;
@@ -14,6 +18,7 @@ import com.example.datvexe.domain.repository.AuthRepository;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.util.Base64;
 
 import javax.inject.Inject;
 
@@ -38,6 +43,8 @@ public class AuthRepositoryImpl implements AuthRepository {
 
         Call<LoginResponseDto> call = authApiService.login(loginRequest);
         call.enqueue(new Callback<LoginResponseDto>() {
+            //Cần API 26 trở lên
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onResponse(Call<LoginResponseDto> call, Response<LoginResponseDto> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -45,14 +52,18 @@ public class AuthRepositoryImpl implements AuthRepository {
 
                     if (loginResponse.getStatus() == 200) {
                         // Lưu token vào SharedPreferences
-                        sharedPreferencesManager.saveToken(loginResponse.getData());
+                        String token = loginResponse.getData();
+                        String[] parts = token.split("\\.");
+                        sharedPreferencesManager.saveToken(token);
+
+                        Base64.Decoder decoder = Base64.getUrlDecoder();
+                        String payload = new String(decoder.decode(parts[1]));
+                        sharedPreferencesManager.saveUserId(payload.split("\"")[3]);
 
                         LoginResult result = new LoginResult(true,
                                 loginResponse.getMessage(), loginResponse.getData());
                         callback.onSuccess(result);
                     } else {
-                        LoginResult result = new LoginResult(false,
-                                loginResponse.getMessage(), null);
                         callback.onError(loginResponse.getMessage());
                     }
                 } else {

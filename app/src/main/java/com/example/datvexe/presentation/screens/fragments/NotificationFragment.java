@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.datvexe.data.local.SharedPreferencesManager;
 import com.example.datvexe.databinding.FragmentNotificationBinding;
 import com.example.datvexe.domain.model.Notification;
 import com.example.datvexe.presentation.adapter.NotificationAdapter;
@@ -19,12 +20,13 @@ import com.google.android.material.tabs.TabLayout;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class NotificationFragment extends Fragment {
-    // Tạm thời hardcode userId - trong thực tế sẽ lấy từ SharedPreferences hoặc Session
-    private static final String USER_ID = "67a5a8bc040810b61bb8e672";
+
 
     FragmentNotificationBinding view;
     TabLayout tabLayout;
@@ -35,6 +37,8 @@ public class NotificationFragment extends Fragment {
 
     NotificationViewModel viewModel;
 
+    @Inject
+    SharedPreferencesManager sharedPreferencesManager;
 
     public NotificationFragment() {
         // Required empty public constructor
@@ -60,8 +64,8 @@ public class NotificationFragment extends Fragment {
         setupTabLayout();
 
         // Khởi tạo ViewModel
-        viewModel.loadNotifications(USER_ID);
-        viewModel.notifications.observe(this, notifications -> {
+        viewModel.loadNotifications(sharedPreferencesManager.getUserId());
+        viewModel.notifications.observe(getViewLifecycleOwner(), notifications -> {
             promotionAdapter.setNotifications(findNotifications(notifications, "promotion"));
             eventAdapter.setNotifications(findNotifications(
                     notifications, Notification.NotificationTab.EVENTS.getValue()));

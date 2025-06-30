@@ -43,7 +43,7 @@ public class LoginFragment extends Fragment {
         setupClickListeners();
 
         //Auto login
-        loginViewModel.login("quang", "123123qq");
+        loginViewModel.login("khachhang1", "123123qq");
     }
 
     private void setupViewModel() {

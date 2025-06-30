@@ -7,6 +7,7 @@ public class SharedPreferencesManager {
     private static final String PREF_NAME = "DatVeXePrefs";
     private static final String KEY_TOKEN = "auth_token";
     private static final String KEY_IS_LOGGED_IN = "is_logged_in";
+    private static final String KEY_USER_ID = "user_id";
 
     private final SharedPreferences sharedPreferences;
     private final SharedPreferences.Editor editor;
@@ -33,5 +34,14 @@ public class SharedPreferencesManager {
     public void clearUserData() {
         editor.clear();
         editor.apply();
+    }
+
+    public void saveUserId(String userId) {
+        editor.putString(KEY_USER_ID, userId);
+        editor.apply();
+    }
+
+    public String getUserId() {
+        return sharedPreferences.getString(KEY_USER_ID, null);
     }
 } 

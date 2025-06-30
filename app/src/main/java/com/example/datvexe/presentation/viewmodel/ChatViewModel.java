@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.datvexe.data.local.SharedPreferencesManager;
 import com.example.datvexe.domain.model.ChatMessage;
 import com.example.datvexe.domain.repository.ChatRepository;
 import com.example.datvexe.domain.usecase.chat.ConnectToChatUseCase;
@@ -19,23 +20,19 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 
 @HiltViewModel
 public class ChatViewModel extends ViewModel {
-    private static final String FIXED_USER_ID = "685aad8f5ae2939d13cea176";
-
     private final ConnectToChatUseCase connectToChatUseCase;
     private final SendMessageUseCase sendMessageUseCase;
     private final GetChatMessagesUseCase getChatMessagesUseCase;
-
     private final MutableLiveData<List<ChatMessage>> _messages = new MutableLiveData<>(new ArrayList<>());
     public final LiveData<List<ChatMessage>> messages = _messages;
-
     private final MutableLiveData<Boolean> _isConnected = new MutableLiveData<>(false);
     public final LiveData<Boolean> isConnected = _isConnected;
-
     private final MutableLiveData<String> _error = new MutableLiveData<>();
     public final LiveData<String> error = _error;
-
     private final MutableLiveData<Boolean> _isLoading = new MutableLiveData<>(false);
     public final LiveData<Boolean> isLoading = _isLoading;
+    @Inject
+    SharedPreferencesManager sharedPreferencesManager;
 
     @Inject
     public ChatViewModel(
@@ -81,10 +78,12 @@ public class ChatViewModel extends ViewModel {
 
     public void connectToChat() {
         try {
-            connectToChatUseCase.execute(FIXED_USER_ID);
+            connectToChatUseCase.execute(sharedPreferencesManager.getUserId());
             _isConnected.setValue(true);
             _isLoading.setValue(true);
-            getChatMessagesUseCase.loadConversationHistory(FIXED_USER_ID);
+            getChatMessagesUseCase.loadConversationHistory(
+                    sharedPreferencesManager.getUserId()
+            );
 //            loadConversationHistory();
         } catch (Exception e) {
             _error.setValue("Lỗi kết nối: " + e.getMessage());
@@ -106,11 +105,11 @@ public class ChatViewModel extends ViewModel {
         try {
             // Tạo sender info cho user
             ChatMessage.Sender sender = new ChatMessage.Sender(
-                    FIXED_USER_ID,
+                    sharedPreferencesManager.getUserId(),
                     "Khách hàng", // Tên mặc định
                     "USER");
 
-            sendMessageUseCase.execute(FIXED_USER_ID, messageText.trim(), sender);
+            sendMessageUseCase.execute(sharedPreferencesManager.getUserId(), messageText.trim(), sender);
         } catch (Exception e) {
             _error.setValue("Lỗi gửi tin nhắn: " + e.getMessage());
         }

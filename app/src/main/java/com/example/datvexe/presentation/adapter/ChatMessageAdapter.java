@@ -23,7 +23,7 @@ import java.util.Locale;
 
 public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.MessageViewHolder> {
     private List<ChatMessage> messages = new ArrayList<>();
-    private SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+    private final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
     @SuppressLint("NotifyDataSetChanged")
     public void setMessages(List<ChatMessage> messages) {
@@ -58,11 +58,11 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
     }
 
     class MessageViewHolder extends RecyclerView.ViewHolder {
-        private TextView messageText;
-        private TextView timeText;
-        private TextView senderName;
-        private LinearLayout messageContainer;
-        private View messageBubble;
+        private final TextView messageText;
+        private final TextView timeText;
+        private final TextView senderName;
+        private final LinearLayout messageContainer;
+        private final View messageBubble;
 
         public MessageViewHolder(@NonNull View itemView) {
             super(itemView);
