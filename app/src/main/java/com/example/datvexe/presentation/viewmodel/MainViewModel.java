@@ -13,15 +13,15 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 
 @HiltViewModel
 public class MainViewModel extends ViewModel {
-    private final MutableLiveData<Integer> _currentTabIndex = new MutableLiveData<>(0);
-    public final LiveData<Integer> currentTabIndex = _currentTabIndex;
 
+    private final MutableLiveData<Integer> _currentTabIndex = new MutableLiveData<>(0);
     private final MutableLiveData<List<String>> _tabTitles =
             new MutableLiveData<>(Arrays.asList("Trang chủ", "Booking", "Thông báo", "Tài khoản"));
-    public final LiveData<List<String>> tabTitles = _tabTitles;
-
     private final MutableLiveData<List<Boolean>> _showNavigateBack =
             new MutableLiveData<>(Arrays.asList(false, false, false, false));
+
+    public final LiveData<Integer> currentTabIndex = _currentTabIndex;
+    public final LiveData<List<String>> tabTitles = _tabTitles;
     public final LiveData<List<Boolean>> showNavigateBack = _showNavigateBack;
 
     @Inject

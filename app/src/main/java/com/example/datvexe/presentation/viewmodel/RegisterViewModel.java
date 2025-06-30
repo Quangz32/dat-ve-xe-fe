@@ -1,5 +1,6 @@
 package com.example.datvexe.presentation.viewmodel;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -14,35 +15,39 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 public class RegisterViewModel extends ViewModel {
     private final RegisterUseCase registerUseCase;
 
-    public MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
-    public MutableLiveData<RegisterResult> registerResult = new MutableLiveData<>();
-    public MutableLiveData<String> errorMessage = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> _isLoading = new MutableLiveData<>();
+    private final MutableLiveData<RegisterResult> _registerResult = new MutableLiveData<>();
+    private final MutableLiveData<String> _errorMessage = new MutableLiveData<>();
+
+    public LiveData<Boolean> isLoading = _isLoading;
+    public LiveData<RegisterResult> registerResult = _registerResult;
+    public LiveData<String> errorMessage = _errorMessage;
 
     @Inject
     public RegisterViewModel(RegisterUseCase registerUseCase) {
         this.registerUseCase = registerUseCase;
-        isLoading.setValue(false);
+        _isLoading.setValue(false);
     }
 
     public void register(String username, String password, String email, String fullname, String phone) {
-        isLoading.setValue(true);
+        _isLoading.setValue(true);
 
         registerUseCase.execute(username, password, email, fullname, phone, new RegisterUseCase.RegisterCallback() {
             @Override
             public void onSuccess(RegisterResult result) {
-                isLoading.setValue(false);
-                registerResult.setValue(result);
+                _isLoading.setValue(false);
+                _registerResult.setValue(result);
             }
 
             @Override
             public void onError(String error) {
-                isLoading.setValue(false);
-                errorMessage.setValue(error);
+                _isLoading.setValue(false);
+                _errorMessage.setValue(error);
             }
         });
     }
 
     public void clearErrorMessage() {
-        errorMessage.setValue(null);
+        _errorMessage.setValue(null);
     }
 }

@@ -15,12 +15,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 public class LoginViewModel extends ViewModel {
     private final LoginUseCase loginUseCase;
 
-    // LiveData cho trạng thái loading
     private final MutableLiveData<Boolean> _isLoading = new MutableLiveData<>();
-    // LiveData cho kết quả đăng nhập
     private final MutableLiveData<LoginResult> _loginResult = new MutableLiveData<>();
-    // LiveData cho lỗi
     private final MutableLiveData<String> _errorMessage = new MutableLiveData<>();
+
+    //Public LiveData để bên ngoài có thể quan sát
     public LiveData<Boolean> isLoading = _isLoading;
     public LiveData<LoginResult> loginResult = _loginResult;
     public LiveData<String> errorMessage = _errorMessage;

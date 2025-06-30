@@ -14,6 +14,7 @@ import com.example.datvexe.domain.repository.AuthRepository;
 import com.example.datvexe.domain.repository.BookingRepository;
 import com.example.datvexe.domain.repository.NotificationRepository;
 import com.example.datvexe.domain.usecase.auth.LoginUseCase;
+import com.example.datvexe.domain.usecase.auth.LogoutUseCase;
 import com.example.datvexe.domain.usecase.auth.RegisterUseCase;
 import com.example.datvexe.domain.usecase.booking.GetBookingByUserIdUseCase;
 import com.example.datvexe.domain.usecase.notification.GetNotificationUseCase;
@@ -139,6 +140,11 @@ public class AppModule {
     @Provides
     public RegisterUseCase provideRegisterUseCase(AuthRepository authRepository) {
         return new RegisterUseCase(authRepository);
+    }
+
+    @Provides
+    public LogoutUseCase provideLogoutUseCase(AuthRepository authRepository) {
+        return new LogoutUseCase(authRepository);
     }
 
     @Provides

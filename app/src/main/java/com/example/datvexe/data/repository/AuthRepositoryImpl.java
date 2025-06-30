@@ -1,6 +1,7 @@
 package com.example.datvexe.data.repository;
 
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -38,7 +39,22 @@ public class AuthRepositoryImpl implements AuthRepository {
     }
 
     @Override
-    public void login(String username, String password, LoginCallback callback) {
+    public void login(String _username, String _password, LoginCallback callback) {
+        String username, password;
+
+        Log.d("auto login", _username + ", " + _password);
+
+        boolean isAutoLogin = _username.equals("_auto") && _password.equals("_auto");
+        if (isAutoLogin) {
+            username = sharedPreferencesManager.getUsername();
+            password = sharedPreferencesManager.getPassword();
+
+            Log.d("auto login", "username: " + username + ", password: " + password);
+        } else {
+            username = _username;
+            password = _password;
+        }
+
         LoginRequestDto loginRequest = new LoginRequestDto(username, password);
 
         Call<LoginResponseDto> call = authApiService.login(loginRequest);
@@ -48,6 +64,9 @@ public class AuthRepositoryImpl implements AuthRepository {
             @Override
             public void onResponse(Call<LoginResponseDto> call, Response<LoginResponseDto> response) {
                 if (response.isSuccessful() && response.body() != null) {
+                    sharedPreferencesManager.saveUsername(username);
+                    sharedPreferencesManager.savePassword(password);
+
                     LoginResponseDto loginResponse = response.body();
 
                     if (loginResponse.getStatus() == 200) {
@@ -125,4 +144,11 @@ public class AuthRepositoryImpl implements AuthRepository {
             }
         });
     }
+
+    @Override
+    public void logout() {
+        sharedPreferencesManager.clearUserData();
+    }
+
+
 }

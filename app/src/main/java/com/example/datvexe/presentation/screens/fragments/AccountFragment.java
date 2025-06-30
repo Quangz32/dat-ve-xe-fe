@@ -7,14 +7,21 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.datvexe.databinding.FragmentAccountBinding;
 import com.example.datvexe.presentation.screens.activities.MainActivity;
+import com.example.datvexe.presentation.viewmodel.AccountViewModel;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class AccountFragment extends Fragment {
     private final int TAB_INDEX = 3;
     private FragmentAccountBinding binding;
     private MainActivity mainActivity;
+
+    private AccountViewModel viewModel;
 
     public AccountFragment() {
         // Required empty public constructor
@@ -28,7 +35,7 @@ public class AccountFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        viewModel = new ViewModelProvider(this).get(AccountViewModel.class);
     }
 
     @Override
@@ -46,6 +53,10 @@ public class AccountFragment extends Fragment {
             mainActivity.setActionBarTitle(TAB_INDEX, "Chat với quản trị viên");
             mainActivity.setShowOrHideNavigateBack(TAB_INDEX, true);
             mainActivity.navigateToFragment(new ChatWithAdminFragment());
+        });
+        binding.tvLogout.setOnClickListener(v -> {
+            viewModel.logout();
+            mainActivity.goToAuthActivity();
         });
         return binding.getRoot();
     }

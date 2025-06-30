@@ -18,6 +18,7 @@ public class NotificationViewModel extends ViewModel {
     public final GetNotificationUseCase getNotificationUseCase;
 
     private final MutableLiveData<List<Notification>> _notifications = new MutableLiveData<>();
+
     public final LiveData<List<Notification>> notifications = _notifications;
 
     //Later

@@ -21,16 +21,19 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 public class BookingViewModel extends ViewModel {
     private final GetBookingByUserIdUseCase getBookingUC;
     private final GetBookingHistoryByUserIdUseCase getBookingHistoryUC;
+
     private final MutableLiveData<Boolean> _showHistory = new MutableLiveData<>(false);
-    public final LiveData<Boolean> showHistory = _showHistory;
     private final MutableLiveData<List<BookingTrip>> _bookings = new MutableLiveData<>();
-    public final LiveData<List<BookingTrip>> bookings = _bookings;
     private final MutableLiveData<List<BookingTrip>> _bookingsHistory = new MutableLiveData<>();
-    public final LiveData<List<BookingTrip>> bookingsHistory = _bookingsHistory;
     private final MutableLiveData<Boolean> _isLoading = new MutableLiveData<>();
-    public final LiveData<Boolean> isLoading = _isLoading;
     private final MutableLiveData<String> _error = new MutableLiveData<>();
+
+    public final LiveData<Boolean> showHistory = _showHistory;
+    public final LiveData<List<BookingTrip>> bookings = _bookings;
+    public final LiveData<List<BookingTrip>> bookingsHistory = _bookingsHistory;
+    public final LiveData<Boolean> isLoading = _isLoading;
     public final LiveData<String> error = _error;
+
     @Inject
     SharedPreferencesManager sharedPreferencesManager;
 

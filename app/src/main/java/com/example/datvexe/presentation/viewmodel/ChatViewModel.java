@@ -23,14 +23,18 @@ public class ChatViewModel extends ViewModel {
     private final ConnectToChatUseCase connectToChatUseCase;
     private final SendMessageUseCase sendMessageUseCase;
     private final GetChatMessagesUseCase getChatMessagesUseCase;
-    private final MutableLiveData<List<ChatMessage>> _messages = new MutableLiveData<>(new ArrayList<>());
-    public final LiveData<List<ChatMessage>> messages = _messages;
+
+    private final MutableLiveData<List<ChatMessage>> _messages =
+            new MutableLiveData<>(new ArrayList<>());
     private final MutableLiveData<Boolean> _isConnected = new MutableLiveData<>(false);
-    public final LiveData<Boolean> isConnected = _isConnected;
     private final MutableLiveData<String> _error = new MutableLiveData<>();
-    public final LiveData<String> error = _error;
     private final MutableLiveData<Boolean> _isLoading = new MutableLiveData<>(false);
+
+    public final LiveData<List<ChatMessage>> messages = _messages;
+    public final LiveData<Boolean> isConnected = _isConnected;
     public final LiveData<Boolean> isLoading = _isLoading;
+    public final LiveData<String> error = _error;
+
     @Inject
     SharedPreferencesManager sharedPreferencesManager;
 

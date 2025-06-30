@@ -9,6 +9,8 @@ public interface AuthRepository {
     void register(String username, String password, String email, String fullname, String phone,
                   RegisterCallback callback);
 
+    void logout();
+
     interface LoginCallback {
         void onSuccess(LoginResult result);
 

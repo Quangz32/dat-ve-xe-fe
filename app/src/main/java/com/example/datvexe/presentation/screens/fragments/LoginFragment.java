@@ -42,8 +42,8 @@ public class LoginFragment extends Fragment {
         setupObservers();
         setupClickListeners();
 
-        //Auto login
-        loginViewModel.login("khachhang1", "123123qq");
+        //Auto login with username & password saved in SharedPreferences
+        loginViewModel.login("_auto", "_auto");
     }
 
     private void setupViewModel() {
