@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.datvexe.domain.model.Notification;
-import com.example.datvexe.domain.usecase.GetNotificationUseCase;
+import com.example.datvexe.domain.usecase.notification.GetNotificationUseCase;
 
 import java.util.List;
 

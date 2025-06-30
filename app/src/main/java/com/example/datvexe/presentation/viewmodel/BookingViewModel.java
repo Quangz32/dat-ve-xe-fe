@@ -7,8 +7,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.datvexe.domain.model.BookingTrip;
-import com.example.datvexe.domain.usecase.GetBookingByUserIdUseCase;
-import com.example.datvexe.domain.usecase.GetBookingHistoryByUserIdUseCase;
+import com.example.datvexe.domain.usecase.booking.GetBookingByUserIdUseCase;
+import com.example.datvexe.domain.usecase.booking.GetBookingHistoryByUserIdUseCase;
 
 import java.util.List;
 

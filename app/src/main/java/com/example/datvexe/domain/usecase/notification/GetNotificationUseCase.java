@@ -1,4 +1,4 @@
-package com.example.datvexe.domain.usecase;
+package com.example.datvexe.domain.usecase.notification;
 
 import com.example.datvexe.domain.model.Notification;
 import com.example.datvexe.domain.repository.NotificationRepository;

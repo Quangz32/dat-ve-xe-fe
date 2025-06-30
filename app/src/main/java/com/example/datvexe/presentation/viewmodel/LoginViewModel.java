@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.datvexe.domain.model.LoginResult;
-import com.example.datvexe.domain.usecase.LoginUseCase;
+import com.example.datvexe.domain.usecase.auth.LoginUseCase;
 
 import javax.inject.Inject;
 

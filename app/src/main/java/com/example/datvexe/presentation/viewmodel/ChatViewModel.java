@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.datvexe.domain.model.ChatMessage;
 import com.example.datvexe.domain.repository.ChatRepository;
-import com.example.datvexe.domain.usecase.ConnectToChatUseCase;
-import com.example.datvexe.domain.usecase.GetChatMessagesUseCase;
-import com.example.datvexe.domain.usecase.SendMessageUseCase;
+import com.example.datvexe.domain.usecase.chat.ConnectToChatUseCase;
+import com.example.datvexe.domain.usecase.chat.GetChatMessagesUseCase;
+import com.example.datvexe.domain.usecase.chat.SendMessageUseCase;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.example.datvexe.domain.usecase;
+package com.example.datvexe.domain.usecase.chat;
 
 import com.example.datvexe.domain.repository.ChatRepository;
 

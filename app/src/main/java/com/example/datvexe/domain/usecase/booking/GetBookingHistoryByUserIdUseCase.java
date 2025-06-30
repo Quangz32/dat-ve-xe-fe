@@ -1,4 +1,4 @@
-package com.example.datvexe.domain.usecase;
+package com.example.datvexe.domain.usecase.booking;
 
 import com.example.datvexe.domain.model.BookingTrip;
 import com.example.datvexe.domain.repository.BookingRepository;
