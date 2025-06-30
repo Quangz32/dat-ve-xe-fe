@@ -13,3 +13,5 @@
 .externalNativeBuild
 .cxx
 local.properties
+datvexe-manage/
+datvexe-backend/

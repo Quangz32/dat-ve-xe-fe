@@ -84,6 +84,9 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation-fragment:1.0.0")
     annotationProcessor("androidx.hilt:hilt-compiler:1.0.0")
 
+    // Socket.IO client for WebSocket communication
+    implementation("io.socket:socket.io-client:2.0.1")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
