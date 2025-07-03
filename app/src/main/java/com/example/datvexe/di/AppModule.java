@@ -7,12 +7,15 @@ import com.example.datvexe.data.remote.api.interceptor.AuthInterceptor;
 import com.example.datvexe.data.remote.api.service.AuthApiService;
 import com.example.datvexe.data.remote.api.service.BookingApiService;
 import com.example.datvexe.data.remote.api.service.NotificationApiService;
+import com.example.datvexe.data.remote.api.service.TripApiService;
 import com.example.datvexe.data.repository.AuthRepositoryImpl;
 import com.example.datvexe.data.repository.BookingRepositoryImpl;
 import com.example.datvexe.data.repository.NotificationRepositoryImpl;
+import com.example.datvexe.data.repository.TripRepositoryImpl;
 import com.example.datvexe.domain.repository.AuthRepository;
 import com.example.datvexe.domain.repository.BookingRepository;
 import com.example.datvexe.domain.repository.NotificationRepository;
+import com.example.datvexe.domain.repository.TripRepository;
 import com.example.datvexe.domain.usecase.auth.LoginUseCase;
 import com.example.datvexe.domain.usecase.auth.LogoutUseCase;
 import com.example.datvexe.domain.usecase.auth.RegisterUseCase;
@@ -103,6 +106,12 @@ public class AppModule {
 
     @Provides
     @Singleton
+    public TripApiService provideTripApiService(Retrofit retrofit) {
+        return retrofit.create(TripApiService.class);
+    }
+
+    @Provides
+    @Singleton
     public NotificationApiService provideNotificationApiService(Retrofit retrofit) {
         return retrofit.create(NotificationApiService.class);
     }
@@ -130,6 +139,12 @@ public class AppModule {
     @Singleton
     public NotificationRepository provideNotificationRepository(NotificationApiService apiService) {
         return new NotificationRepositoryImpl(apiService);
+    }
+
+    @Provides
+    @Singleton
+    public TripRepository provideTripRepository(TripApiService tripApiService) {
+        return new TripRepositoryImpl(tripApiService);
     }
 
     @Provides
