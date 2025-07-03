@@ -37,7 +37,7 @@ public class BusSchedule {
 
     @NotNull(message = "Price không được null")
     @Min(value = 0, message = "Price phải >= 0")
-    private Long price;
+    private double price;
 
     @NotNull(message = "Date không được null")
     private Date date;
@@ -98,5 +98,109 @@ public class BusSchedule {
         public String getValue() {
             return value;
         }
+    }
+
+    // Display fields
+    private String busName;
+    private String busInfo;
+    private String departureTime;
+    private String departureLocation;
+    private String duration;
+    private String arrivalTime;
+    private String arrivalLocation;
+    private String formattedPrice; // Định dạng giá để hiển thị
+
+    public BusSchedule(String busName, String route, String busInfo, double price,
+                      String departureTime, String departureLocation, String duration,
+                      String arrivalTime, String arrivalLocation) {
+        this.busName = busName;
+        this.route = route;
+        this.busInfo = busInfo;
+        this.price = price;
+        this.departureTime = departureTime;
+        this.departureLocation = departureLocation;
+        this.duration = duration;
+        this.arrivalTime = arrivalTime;
+        this.arrivalLocation = arrivalLocation;
+    }
+
+    public String getBusName() {
+        return busName;
+    }
+
+    public void setBusName(String busName) {
+        this.busName = busName;
+    }
+
+    public String getRoute() {
+        return route;
+    }
+
+    public void setRoute(String route) {
+        this.route = route;
+    }
+
+    public String getBusInfo() {
+        return busInfo;
+    }
+
+    public void setBusInfo(String busInfo) {
+        this.busInfo = busInfo;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public String getDepartureTime() {
+        return departureTime;
+    }
+
+    public void setDepartureTime(String departureTime) {
+        this.departureTime = departureTime;
+    }
+
+    public String getDepartureLocation() {
+        return departureLocation;
+    }
+
+    public void setDepartureLocation(String departureLocation) {
+        this.departureLocation = departureLocation;
+    }
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
+
+    public String getArrivalTime() {
+        return arrivalTime;
+    }
+
+    public void setArrivalTime(String arrivalTime) {
+        this.arrivalTime = arrivalTime;
+    }
+
+    public String getArrivalLocation() {
+        return arrivalLocation;
+    }
+
+    public void setArrivalLocation(String arrivalLocation) {
+        this.arrivalLocation = arrivalLocation;
+    }
+    
+    public String getFormattedPrice() {
+        return formattedPrice != null ? formattedPrice : String.valueOf((int)price) + "đ";
+    }
+
+    public void setFormattedPrice(String formattedPrice) {
+        this.formattedPrice = formattedPrice;
     }
 } 

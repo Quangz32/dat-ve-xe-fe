@@ -84,6 +84,10 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation-fragment:1.0.0")
     annotationProcessor("androidx.hilt:hilt-compiler:1.0.0")
 
+    // MapStruct
+    implementation("org.mapstruct:mapstruct:1.5.5.Final")
+    annotationProcessor("org.mapstruct:mapstruct-processor:1.5.5.Final")
+
     // Socket.IO client for WebSocket communication
     implementation("io.socket:socket.io-client:2.0.1")
 

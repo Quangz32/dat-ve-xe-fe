@@ -31,4 +31,17 @@ public class BusStation {
     private Date updatedAt;
 
     private Date deletedAt;
+    
+    // Convenience field for UI display
+    private String name;
+    
+    // Getter for name that returns tenBenXe if name is null
+    public String getName() {
+        return name != null ? name : tenBenXe;
+    }
+    
+    // Setter for name
+    public void setName(String name) {
+        this.name = name;
+    }
 } 
