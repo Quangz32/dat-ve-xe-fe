@@ -21,4 +21,27 @@
     <string name="toi_dong_y_voi_dieu_khoan_dich_vu">Tôi đồng ý với điều khoản dịch vụ</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    
+    <!-- Seat Selection Screen -->
+    <string name="select_seat">Chọn chỗ</string>
+    <string name="back">Quay lại</string>
+    <string name="available">Chỗ trống</string>
+    <string name="selected">Đang đặt</string>
+    <string name="booked">Đã đặt</string>
+    <string name="bus_34_seats">Xe 34 phòng</string>
+    <string name="bus_20_seats">Xe 20 phòng</string>
+    <string name="floor_1">Tầng 1</string>
+    <string name="floor_2">Tầng 2</string>
+    <string name="route">Lộ trình</string>
+    <string name="bus_info">Thông tin xe</string>
+    <string name="total_price">Tổng tiền:</string>
+    <string name="continue_text">Tiếp tục</string>
+    
+    <!-- Route Detail Screen -->
+    <string name="route_detail">Chi tiết lộ trình</string>
+    <string name="stops">Các điểm dừng</string>
+    <string name="notes">Lưu ý</string>
+    <string name="note_arrival">Hành khách nên có mặt tại bến xe trước 30 phút</string>
+    <string name="note_time_change">Thời gian di chuyển có thể thay đổi tùy theo tình hình giao thông</string>
+    <string name="note_rest_stops">Xe sẽ dừng nghỉ tại các trạm dừng khoảng 15-20 phút</string>
 </resources>

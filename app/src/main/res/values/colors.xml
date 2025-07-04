@@ -23,7 +23,7 @@
     <color name="orange">#FFA500</color>
     <color name="lightsalmon">#FFA07A</color>
     <color name="darkorange">#FF8C00</color>
-    <color name="coral">#FF7F50</color>
+    <color name="coral">#FF9B84</color>
     <color name="hotpink">#FF69B4</color>
     <color name="tomato">#FF6347</color>
     <color name="orangered">#FF4500</color>
@@ -61,6 +61,7 @@
     <color name="orchid">#DA70D6</color>
     <color name="thistle">#D8BFD8</color>
     <color name="lightgrey">#D3D3D3</color>
+    <color name="darkgray_700">#757575</color>
     <color name="tan">#D2B48C</color>
     <color name="chocolate">#D2691E</color>
     <color name="peru">#CD853F</color>
@@ -140,4 +141,8 @@
     <color name="darkblue">#00008B</color>
     <color name="navy">#000080</color>
     <color name="black">#000000</color>
+    <color name="date_background">#FFFFFF</color>
+    <color name="date_selected_background">@color/coral</color>
+    <color name="date_text_color">#1C1B1F</color>
+    <color name="date_selected_text_color">#FFFFFF</color>
 </resources>

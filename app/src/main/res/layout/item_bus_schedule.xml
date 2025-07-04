@@ -4,22 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="8dp"
     android:layout_marginBottom="8dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="2dp">
+    app:cardCornerRadius="8dp"
+    app:cardElevation="1dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:orientation="vertical">
 
         <!-- Bus Info -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="12dp"
+            android:background="#FFFFFF">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -32,27 +32,27 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="#1C1B1F"
-                    android:textSize="17sp"
+                    android:textSize="15sp"
                     android:textStyle="bold"
-                    tools:text="Sao Việt 01" />
+                    tools:text="Sao Việt 02 - Luxury" />
 
                 <TextView
                     android:id="@+id/tvRoute"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="2dp"
                     android:textColor="#666666"
-                    android:textSize="14sp"
-                    tools:text="Hà Nội - Lào Cai" />
+                    android:textSize="13sp"
+                    tools:text="Sapa - Hà Nội" />
 
                 <TextView
                     android:id="@+id/tvBusInfo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:textColor="#4CAF50"
-                    android:textSize="13sp"
-                    tools:text="34 giường (20 chỗ còn trống)" />
+                    android:layout_marginTop="2dp"
+                    android:textColor="#777777"
+                    android:textSize="12sp"
+                    tools:text="SAOVIET-2-UFREGN • 34 chỗ trống" />
 
             </LinearLayout>
 
@@ -60,150 +60,84 @@
                 android:id="@+id/tvPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_price_tag"
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="6dp"
-                android:textColor="#FFFFFF"
-                android:textSize="16sp"
+                android:textColor="@color/coral"
+                android:textSize="15sp"
                 android:textStyle="bold"
-                tools:text="450.000đ" />
+                tools:text="400.000đ" />
 
         </LinearLayout>
-
+        
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginVertical="12dp"
-            android:background="#E0E0E0" />
+            android:layout_height="0.5dp"
+            android:background="#EEEEEE" />
 
         <!-- Time Info -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:padding="12dp"
+            android:background="#FFFFFF">
 
             <!-- Departure -->
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.2"
-                android:orientation="vertical">
-
-                <LinearLayout
+                android:orientation="horizontal">
+                
+                <TextView
+                    android:id="@+id/tvDepartureTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:src="@drawable/baseline_schedule_24"
-                        app:tint="#1E88E5" />
-
-                    <TextView
-                        android:id="@+id/tvDepartureTime"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:textColor="#1E88E5"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        tools:text="19:00" />
-                </LinearLayout>
-
+                    android:textColor="#333333"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    tools:text="04:00" />
+                    
                 <TextView
                     android:id="@+id/tvDepartureLocation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="8dp"
                     android:textColor="#666666"
                     android:textSize="13sp"
                     tools:text="Bến xe Mỹ Đình" />
-
             </LinearLayout>
 
-            <!-- Duration -->
-            <LinearLayout
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/tvDuration"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.8"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <View
-                    android:layout_width="60dp"
-                    android:layout_height="1dp"
-                    android:background="#BDBDBD" />
-
-                <TextView
-                    android:id="@+id/tvDuration"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:textColor="#9E9E9E"
-                    android:textSize="12sp"
-                    tools:text="7 giờ" />
-            </LinearLayout>
+                android:layout_marginVertical="4dp"
+                android:textColor="#888888"
+                android:textSize="12sp"
+                tools:text="6h" />
 
             <!-- Arrival -->
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.2"
-                android:gravity="end"
-                android:orientation="vertical">
-
-                <LinearLayout
+                android:orientation="horizontal">
+                
+                <TextView
+                    android:id="@+id/tvArrivalTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:src="@drawable/baseline_schedule_24"
-                        app:tint="#FF5722" />
-
-                    <TextView
-                        android:id="@+id/tvArrivalTime"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:textColor="#FF5722"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        tools:text="02:00" />
-                </LinearLayout>
-
+                    android:textColor="#333333"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    tools:text="08:00" />
+                    
                 <TextView
                     android:id="@+id/tvArrivalLocation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginEnd="24dp"
+                    android:layout_marginStart="8dp"
                     android:textColor="#666666"
                     android:textSize="13sp"
-                    tools:text="Bến xe Lào Cai" />
-
+                    tools:text="Bến xe trung tâm Lào Cai" />
             </LinearLayout>
-
         </LinearLayout>
-
-        <!-- Select Button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSelect"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:backgroundTint="#FF5722"
-            android:text="Chọn chuyến"
-            android:textAllCaps="false"
-            android:textStyle="bold"
-            app:cornerRadius="8dp" />
-
     </LinearLayout>
-
 </com.google.android.material.card.MaterialCardView> 

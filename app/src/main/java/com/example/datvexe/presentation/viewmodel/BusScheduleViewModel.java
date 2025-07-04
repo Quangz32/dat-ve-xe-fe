@@ -78,7 +78,6 @@ public class BusScheduleViewModel extends ViewModel {
     public void loadSchedules() {
         _isLoading.setValue(true);
 
-        // Tạm thời tạo dữ liệu mẫu nếu không có đủ thông tin trạm
         BusStation fromStation = _fromStation.getValue();
         BusStation toStation = _toStation.getValue();
         
@@ -103,7 +102,6 @@ public class BusScheduleViewModel extends ViewModel {
             ", To: " + request.getBenXeDichDen() + 
             ", Date: " + request.getDate());
 
-        // Call API
         tripRepository.loadDataSchedule(request, new ScheduleCallBack() {
             @Override
             public void onSuccess(List<ScheduleResponseDto> data) {

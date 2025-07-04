@@ -1,5 +1,7 @@
 package com.example.datvexe.data.repository;
 
+import android.util.Log;
+
 import com.example.datvexe.data.remote.api.callback.ScheduleCallBack;
 import com.example.datvexe.data.remote.api.callback.TripCallBack;
 import com.example.datvexe.data.remote.api.service.TripApiService;
@@ -61,11 +63,13 @@ public class TripRepositoryImpl implements TripRepository {
                     ApiResponse<List<ScheduleResponseDto>> apiResponse = response.body();
                     if(apiResponse.getStatus() == 200 && apiResponse.getData() != null) {
                         callBack.onSuccess(apiResponse.getData());
-                    } else {
+                    } else if(apiResponse.getData().isEmpty()) {
                         callBack.onError("API Error: " + apiResponse.getMessage());
+                    }else{
+                        callBack.onError("API Error: " + "Lỗi khi lấy dữ liệu !!!");
                     }
                 } else {
-                    callBack.onError("Network Error: " + response.message());
+                    callBack.onError("Network Error: " + "Lỗi khi lấy dữ liệu !!!");
                 }
             }
 

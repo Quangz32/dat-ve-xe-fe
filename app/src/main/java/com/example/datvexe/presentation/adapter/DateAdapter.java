@@ -1,14 +1,14 @@
 package com.example.datvexe.presentation.adapter;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.datvexe.R;
-import com.example.datvexe.databinding.ItemDateBinding;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,12 +21,16 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.DateViewHolder
     private List<Date> dates = new ArrayList<>();
     private Date selectedDate;
     private OnDateSelectedListener listener;
-    private final SimpleDateFormat dayFormat = new SimpleDateFormat("dd", new Locale("vi"));
+    private final SimpleDateFormat dayFormat = new SimpleDateFormat("dd", Locale.getDefault());
+    private final SimpleDateFormat monthFormat = new SimpleDateFormat("MM", Locale.getDefault());
     private final SimpleDateFormat dayOfWeekFormat = new SimpleDateFormat("EEE", new Locale("vi"));
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd", new Locale("vi"));
 
     public interface OnDateSelectedListener {
         void onDateSelected(Date date);
+    }
+
+    public void setOnDateSelectedListener(OnDateSelectedListener listener) {
+        this.listener = listener;
     }
 
     public void setDates(List<Date> dates) {
@@ -37,89 +41,85 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.DateViewHolder
         notifyDataSetChanged();
     }
 
-    public void setOnDateSelectedListener(OnDateSelectedListener listener) {
-        this.listener = listener;
+    public void selectDate(Date date) {
+        if (date != null) {
+            int oldPosition = getPositionForDate(selectedDate);
+            selectedDate = date;
+            int newPosition = getPositionForDate(date);
+            if (oldPosition != -1) notifyItemChanged(oldPosition);
+            if (newPosition != -1) notifyItemChanged(newPosition);
+        }
     }
 
-    /**
-     * Select a specific date and update the UI
-     * @param date The date to select
-     */
-    public void selectDate(Date date) {
-        if (date == null || dates.isEmpty()) return;
-        
-        // Find the matching date in our list
-        String dateString = dateFormat.format(date);
-        int position = -1;
-        
+    private int getPositionForDate(Date date) {
+        if (date == null) return -1;
+        Calendar cal1 = Calendar.getInstance();
+        Calendar cal2 = Calendar.getInstance();
         for (int i = 0; i < dates.size(); i++) {
-            if (dateFormat.format(dates.get(i)).equals(dateString)) {
-                position = i;
-                break;
+            cal1.setTime(date);
+            cal2.setTime(dates.get(i));
+            if (cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
+                cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH) &&
+                cal1.get(Calendar.DAY_OF_MONTH) == cal2.get(Calendar.DAY_OF_MONTH)) {
+                return i;
             }
         }
-        
-        if (position != -1) {
-            Date oldSelected = selectedDate;
-            selectedDate = dates.get(position);
-            
-            // Only update if the selection has changed
-            if (!selectedDate.equals(oldSelected)) {
-                int oldPos = oldSelected != null ? dates.indexOf(oldSelected) : -1;
-                if (oldPos != -1) {
-                    notifyItemChanged(oldPos);
-                }
-                notifyItemChanged(position);
-            }
-            
-            // Scroll to the selected position
-            if (recyclerView != null) {
-                recyclerView.smoothScrollToPosition(position);
-            }
-        }
-    }
-    
-    private RecyclerView recyclerView;
-    
-    @Override
-    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
-        this.recyclerView = recyclerView;
-    }
-    
-    @Override
-    public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
-        super.onDetachedFromRecyclerView(recyclerView);
-        this.recyclerView = null;
+        return -1;
     }
 
     @NonNull
     @Override
     public DateViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemDateBinding binding = ItemDateBinding.inflate(
-                LayoutInflater.from(parent.getContext()),
-                parent,
-                false
-        );
-        return new DateViewHolder(binding);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_date, parent, false);
+        return new DateViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull DateViewHolder holder, int position) {
         Date date = dates.get(position);
-        holder.bind(date);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+
+        // Format date components
+        String dayOfWeek = dayOfWeekFormat.format(date);
+        String day = dayFormat.format(date);
+        String month = "Th" + monthFormat.format(date);
+
+        // Set text
+        holder.tvDayOfWeek.setText(dayOfWeek);
+        holder.tvDate.setText(day);
+        holder.tvMonth.setText(month);
+
+        // Handle selection state
+        boolean isSelected = selectedDate != null && isSameDay(date, selectedDate);
+        holder.itemView.setSelected(isSelected);
+        
+        // Update text colors based on selection
+        int textColor = isSelected ? 
+            holder.itemView.getContext().getColor(R.color.date_selected_text_color) :
+            holder.itemView.getContext().getColor(R.color.date_text_color);
+            
+        holder.tvDayOfWeek.setTextColor(textColor);
+        holder.tvDate.setTextColor(textColor);
+        holder.tvMonth.setTextColor(textColor);
 
         holder.itemView.setOnClickListener(v -> {
-            if (selectedDate != date) {
-                Date oldSelected = selectedDate;
-                selectedDate = date;
-                notifyItemChanged(dates.indexOf(oldSelected));
-                notifyItemChanged(position);
-                if (listener != null) {
-                    listener.onDateSelected(date);
-                }
+            if (listener != null) {
+                selectDate(date);
+                listener.onDateSelected(date);
             }
         });
+    }
+
+    private boolean isSameDay(Date date1, Date date2) {
+        if (date1 == null || date2 == null) return false;
+        Calendar cal1 = Calendar.getInstance();
+        Calendar cal2 = Calendar.getInstance();
+        cal1.setTime(date1);
+        cal2.setTime(date2);
+        return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
+               cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH) &&
+               cal1.get(Calendar.DAY_OF_MONTH) == cal2.get(Calendar.DAY_OF_MONTH);
     }
 
     @Override
@@ -127,31 +127,16 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.DateViewHolder
         return dates.size();
     }
 
-    class DateViewHolder extends RecyclerView.ViewHolder {
-        private final ItemDateBinding binding;
+    static class DateViewHolder extends RecyclerView.ViewHolder {
+        TextView tvDayOfWeek;
+        TextView tvDate;
+        TextView tvMonth;
 
-        public DateViewHolder(@NonNull ItemDateBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
-        }
-
-        public void bind(Date date) {
-            binding.tvDay.setText(dayFormat.format(date));
-            binding.tvDayOfWeek.setText(dayOfWeekFormat.format(date));
-
-            boolean isSelected = date.equals(selectedDate);
-            int textColor = isSelected ? 
-                    ContextCompat.getColor(itemView.getContext(), R.color.white) :
-                    ContextCompat.getColor(itemView.getContext(), R.color.black);
-            
-            binding.tvDay.setTextColor(textColor);
-            binding.tvDayOfWeek.setTextColor(textColor);
-            
-            if (isSelected) {
-                binding.tvDay.setBackgroundResource(R.drawable.circle_background_selected);
-            } else {
-                binding.tvDay.setBackgroundResource(0);
-            }
+        DateViewHolder(@NonNull View itemView) {
+            super(itemView);
+            tvDayOfWeek = itemView.findViewById(R.id.tvDayOfWeek);
+            tvDate = itemView.findViewById(R.id.tvDate);
+            tvMonth = itemView.findViewById(R.id.tvMonth);
         }
     }
 } 
