@@ -49,6 +49,10 @@ dependencies {
     implementation("com.google.android.material:material:1.10.0")
     implementation("androidx.viewpager2:viewpager2:1.0.0")
 
+
+    // CircleIndicator for ViewPager2
+    implementation("me.relex:circleindicator:2.1.6")
+
     // Lombok
     compileOnly("org.projectlombok:lombok:1.18.30")
     annotationProcessor("org.projectlombok:lombok:1.18.30")

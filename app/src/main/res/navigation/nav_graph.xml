@@ -44,6 +44,59 @@
         <argument
             android:name="passengerCount"
             app:argType="string" />
+        <action
+            android:id="@+id/action_busScheduleFragment_to_seatSelectedFragment"
+            app:destination="@id/seatSelectedFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
+
+    <fragment
+        android:id="@+id/seatSelectedFragment"
+        android:name="com.example.datvexe.presentation.screens.fragments.SeatSelectedFragment"
+        android:label="SeatSelectedFragment"
+        tools:layout="@layout/fragment_seat_selected">
+        <action
+            android:id="@+id/action_seatSelectedFragment_to_bookingConfirmFragment"
+            app:destination="@id/bookingConfirmFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_seatSelectedFragment_to_routeDetailFragment"
+            app:destination="@id/routeDetailFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_seatSelectedFragment_to_busInfoFragment"
+            app:destination="@id/busInfoFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/bookingConfirmFragment"
+        android:name="com.example.datvexe.presentation.screens.fragments.BookingConfirmFragment"
+        android:label="BookingConfirmFragment"
+        tools:layout="@layout/fragment_booking_confirm" />
+        
+    <fragment
+        android:id="@+id/routeDetailFragment"
+        android:name="com.example.datvexe.presentation.screens.fragments.RouteDetailFragment"
+        android:label="RouteDetailFragment"
+        tools:layout="@layout/fragment_route_detail" />
+
+    <fragment
+        android:id="@+id/busInfoFragment"
+        android:name="com.example.datvexe.presentation.screens.fragments.BusInfoFragment"
+        android:label="BusInfoFragment"
+        tools:layout="@layout/fragment_bus_info" />
 
 </navigation> 

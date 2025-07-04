@@ -60,8 +60,8 @@ public class BusScheduleAdapter extends RecyclerView.Adapter<BusScheduleAdapter.
             super(binding.getRoot());
             this.binding = binding;
             
-            // Xử lý nút chọn chuyến
-            binding.btnSelect.setOnClickListener(v -> {
+            // Set click listener for the entire item
+            itemView.setOnClickListener(v -> {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION && listener != null) {
                     listener.onScheduleClick(schedules.get(position));
@@ -71,25 +71,34 @@ public class BusScheduleAdapter extends RecyclerView.Adapter<BusScheduleAdapter.
 
         public void bind(BusSchedule schedule) {
             // Thông tin xe
-            binding.tvBusName.setText(schedule.getBusName());
+            String busName = schedule.getBusName();
+            if (schedule.getBusOperatorDetail() != null && schedule.getBusOperatorDetail().getTypeBusDetail() != null) {
+                busName += " - " + schedule.getBusOperatorDetail().getTypeBusDetail().getName();
+            }
+            binding.tvBusName.setText(busName);
+            
+            // Route info
             binding.tvRoute.setText(schedule.getRoute());
             
-            // Hiển thị loại xe/số ghế
-            String busInfoText = schedule.getBusInfo();
-            if (schedule.getAvailableSeats() != null && schedule.getAvailableSeats() > 0) {
-                busInfoText = busInfoText + " (" + schedule.getAvailableSeats() + " chỗ còn trống)";
-            }
-            binding.tvBusInfo.setText(busInfoText);
+            // Bus info with code and available seats
+            String busId = schedule.getBusOperator() != null ? schedule.getBusOperator().getName() : "";
+            String availableSeats = schedule.getAvailableSeats() != null ? schedule.getAvailableSeats() + " chỗ trống" : "";
+            binding.tvBusInfo.setText(busId + (availableSeats.isEmpty() ? "" : " • " + availableSeats));
             
-            // Hiển thị giá vé đã được định dạng đẹp
-            binding.tvPrice.setText(schedule.getFormattedPrice());
+            // Format price
+            binding.tvPrice.setText(formatPrice(schedule.getPrice()) + "đ");
             
-            // Thông tin thời gian và địa điểm
+            // Departure and arrival info
             binding.tvDepartureTime.setText(schedule.getDepartureTime());
             binding.tvDepartureLocation.setText(schedule.getDepartureLocation());
             binding.tvDuration.setText(schedule.getDuration());
             binding.tvArrivalTime.setText(schedule.getArrivalTime());
             binding.tvArrivalLocation.setText(schedule.getArrivalLocation());
+        }
+        
+        private String formatPrice(double price) {
+            NumberFormat formatter = NumberFormat.getNumberInstance(new Locale("vi", "VN"));
+            return formatter.format(price);
         }
     }
 } 

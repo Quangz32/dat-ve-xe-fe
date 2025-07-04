@@ -12,8 +12,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.datvexe.R;
+import com.example.datvexe.data.local.SharedPreferencesManager;
 import com.example.datvexe.data.local.TripService;
 import com.example.datvexe.databinding.FragmentBusScheduleBinding;
 import com.example.datvexe.domain.model.BusSchedule;
@@ -41,7 +44,9 @@ public class BusScheduleFragment extends Fragment {
     private BusScheduleAdapter scheduleAdapter;
     private DateAdapter dateAdapter;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+    private SimpleDateFormat monthYearFormat = new SimpleDateFormat("MMMM yyyy", new Locale("vi"));
     private TripService tripService = TripService.getInstance();
+    private SharedPreferencesManager sharedPreferencesManager;
 
     private String fromStationId;
     private String toStationId;
@@ -54,8 +59,9 @@ public class BusScheduleFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = new ViewModelProvider(this).get(BusScheduleViewModel.class);
+        sharedPreferencesManager = new SharedPreferencesManager(requireContext());
         
-        // Get arguments from bundle
+        // First try to get arguments from bundle
         if (getArguments() != null) {
             // Get the station names (for display)
             fromStationName = getArguments().getString("departureLocation", "");
@@ -105,23 +111,26 @@ public class BusScheduleFragment extends Fragment {
             } catch (NumberFormatException e) {
                 passengerCount = 1;
             }
+
+            // Save search parameters to SharedPreferences
+            saveBusSearchParams();
             
             // Set values to ViewModel
             if (fromStationId != null) {
                 BusStation fromStation = new BusStation();
                 fromStation.setId(fromStationId);
-                fromStation.setMaBenXe(fromStationId);  // Thêm mã bến xe
+                fromStation.setMaBenXe(fromStationId);
                 fromStation.setName(fromStationName);
-                fromStation.setTenBenXe(fromStationName);  // Thêm tên bến xe
+                fromStation.setTenBenXe(fromStationName);
                 viewModel.setFromStation(fromStation);
             }
             
             if (toStationId != null) {
                 BusStation toStation = new BusStation();
                 toStation.setId(toStationId);
-                toStation.setMaBenXe(toStationId);  // Thêm mã bến xe
+                toStation.setMaBenXe(toStationId);
                 toStation.setName(toStationName);
-                toStation.setTenBenXe(toStationName);  // Thêm tên bến xe
+                toStation.setTenBenXe(toStationName);
                 viewModel.setToStation(toStation);
             }
             
@@ -130,6 +139,10 @@ public class BusScheduleFragment extends Fragment {
             if (selectedDate != null) {
                 viewModel.setSelectedDate(selectedDate);
             }
+        }
+        // If no arguments, try to load from shared preferences
+        else {
+            loadBusSearchParams();
         }
     }
 
@@ -148,8 +161,8 @@ public class BusScheduleFragment extends Fragment {
         setupObservers();
         setupDateSelector();
         
-        // Show route information
-        updateRouteInfo();
+        // Show month and year
+        updateMonthYearHeader();
         
         // Load schedules
         if (fromStationId != null && toStationId != null) {
@@ -164,10 +177,12 @@ public class BusScheduleFragment extends Fragment {
         }
     }
 
-    private void updateRouteInfo() {
-        String routeText = fromStationName + " → " + toStationName;
-        binding.tvRoute.setText(routeText);
-        binding.tvPassengerInfo.setText(passengerCount + " người");
+    private void updateMonthYearHeader() {
+        if (selectedDate != null) {
+            String monthYearStr = "Tháng " + new SimpleDateFormat("M", Locale.getDefault()).format(selectedDate) +
+                    " năm " + new SimpleDateFormat("yyyy", Locale.getDefault()).format(selectedDate);
+            binding.tvMonthYear.setText(monthYearStr);
+        }
     }
 
     private void setupViews() {
@@ -189,7 +204,10 @@ public class BusScheduleFragment extends Fragment {
 
     private void setupListeners() {
         binding.btnBack.setOnClickListener(v -> {
-            requireActivity().onBackPressed();
+            if (requireActivity() instanceof MainActivity) {
+                LocationTripFragment locationTripFragment = new LocationTripFragment();
+                ((MainActivity) requireActivity()).navigateToFragment(locationTripFragment);
+            }
         });
 
         binding.btnDepartureTime.setOnClickListener(v -> {
@@ -208,15 +226,53 @@ public class BusScheduleFragment extends Fragment {
         });
 
         scheduleAdapter.setOnScheduleClickListener(schedule -> {
-            // Handle schedule selection
-            Toast.makeText(requireContext(), "Đã chọn: " + schedule.getBusName(), Toast.LENGTH_SHORT).show();
-            // TODO: Navigate to booking screen
+            // Navigate to SeatSelectedFragment
+            String busType = getBusTypeFromSchedule(schedule);
+            
+            // Save the current search parameters to SharedPreferences 
+            saveBusSearchParams();
+            
+            // Tạo fragment và truyền dữ liệu qua Bundle
+            SeatSelectedFragment fragment = SeatSelectedFragment.newInstance(schedule, busType);
+            
+            // Sử dụng phương thức navigateToFragment từ MainActivity
+            if (requireActivity() instanceof MainActivity) {
+                ((MainActivity) requireActivity()).navigateToFragment(fragment);
+            } else {
+                Log.e(TAG, "Activity không phải là MainActivity");
+                Toast.makeText(requireContext(), "Không thể chuyển màn hình", Toast.LENGTH_SHORT).show();
+            }
         });
 
         dateAdapter.setOnDateSelectedListener(date -> {
             // Load schedules for selected date
+            selectedDate = date;
+            updateMonthYearHeader();
             viewModel.loadSchedulesForDate(date);
         });
+    }
+
+    private String getBusTypeFromSchedule(BusSchedule schedule) {
+        if (schedule.getBusOperatorDetail() != null) {
+            List<String> types = schedule.getBusOperatorDetail().getTypes();
+            if (types != null && !types.isEmpty()) {
+                return types.get(0);
+            }
+            
+            if (schedule.getBusOperatorDetail().getTypeBusDetail() != null &&
+                schedule.getBusOperatorDetail().getTypeBusDetail().getCode() != null) {
+                return schedule.getBusOperatorDetail().getTypeBusDetail().getCode();
+            }
+        }
+        
+        if (schedule.getBusOperator() != null &&
+            schedule.getBusOperator().getTypes() != null && 
+            !schedule.getBusOperator().getTypes().isEmpty()) {
+            return schedule.getBusOperator().getTypes().get(0);
+        }
+        
+        Log.e(TAG, "Bus type not found for schedule: " + schedule);
+        return "BUS34"; // Default to BUS34 if no type is specified
     }
 
     private void setupObservers() {
@@ -248,8 +304,8 @@ public class BusScheduleFragment extends Fragment {
         
         viewModel.getSelectedDate().observe(getViewLifecycleOwner(), date -> {
             if (date != null) {
-                binding.tvSelectedDate.setText(dateFormat.format(date));
-                // Select the corresponding date in the RecyclerView
+                selectedDate = date;
+                updateMonthYearHeader();
                 dateAdapter.selectDate(date);
             }
         });
@@ -264,16 +320,13 @@ public class BusScheduleFragment extends Fragment {
     }
 
     private void setupDateSelector() {
-        // Generate dates for the next 7 days
         List<Date> dates = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
         
-        // If selectedDate is set, use that as the starting point
         if (selectedDate != null) {
             calendar.setTime(selectedDate);
         }
         
-        // Add the selected/current date as the first date
         dates.add(calendar.getTime());
         
         // Then add 6 more days
@@ -284,9 +337,81 @@ public class BusScheduleFragment extends Fragment {
         
         dateAdapter.setDates(dates);
         
-        // Select the first date (which is our selected/current date)
         if (!dates.isEmpty()) {
             viewModel.setSelectedDate(dates.get(0));
+        }
+    }
+
+    // Lưu thông tin tìm kiếm vào SharedPreferences
+    private void saveBusSearchParams() {
+        if (sharedPreferencesManager != null) {
+            String dateStr = selectedDate != null ? dateFormat.format(selectedDate) : null;
+            String passengerCountStr = String.valueOf(passengerCount);
+            sharedPreferencesManager.saveBusSearchParams(
+                fromStationId, fromStationName, 
+                toStationId, toStationName, 
+                dateStr, passengerCountStr
+            );
+            Log.d(TAG, "Saved search params to SharedPreferences");
+        }
+    }
+
+    // Tải thông tin tìm kiếm từ SharedPreferences
+    private void loadBusSearchParams() {
+        if (sharedPreferencesManager != null) {
+            fromStationId = sharedPreferencesManager.getFromStationId();
+            fromStationName = sharedPreferencesManager.getFromStationName();
+            toStationId = sharedPreferencesManager.getToStationId();
+            toStationName = sharedPreferencesManager.getToStationName();
+            
+            String dateStr = sharedPreferencesManager.getTravelDate();
+            if (dateStr != null) {
+                try {
+                    selectedDate = dateFormat.parse(dateStr);
+                } catch (ParseException e) {
+                    selectedDate = new Date();
+                }
+            } else {
+                selectedDate = new Date();
+            }
+            
+            String passengerCountStr = sharedPreferencesManager.getPassengerCount();
+            if (passengerCountStr != null) {
+                try {
+                    passengerCount = Integer.parseInt(passengerCountStr);
+                } catch (NumberFormatException e) {
+                    passengerCount = 1;
+                }
+            }
+            
+            Log.d(TAG, "Loaded search params from SharedPreferences: " + 
+                "fromStationId=" + fromStationId + 
+                ", toStationId=" + toStationId);
+                
+            // Set values to ViewModel if they exist
+            if (fromStationId != null) {
+                BusStation fromStation = new BusStation();
+                fromStation.setId(fromStationId);
+                fromStation.setMaBenXe(fromStationId);
+                fromStation.setName(fromStationName);
+                fromStation.setTenBenXe(fromStationName);
+                viewModel.setFromStation(fromStation);
+            }
+            
+            if (toStationId != null) {
+                BusStation toStation = new BusStation();
+                toStation.setId(toStationId);
+                toStation.setMaBenXe(toStationId);
+                toStation.setName(toStationName);
+                toStation.setTenBenXe(toStationName);
+                viewModel.setToStation(toStation);
+            }
+            
+            viewModel.setPassengerCount(passengerCount);
+            
+            if (selectedDate != null) {
+                viewModel.setSelectedDate(selectedDate);
+            }
         }
     }
 

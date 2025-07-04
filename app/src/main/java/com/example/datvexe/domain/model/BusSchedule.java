@@ -1,5 +1,8 @@
 package com.example.datvexe.domain.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
@@ -18,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BusSchedule {
+public class BusSchedule implements Parcelable {
 
     @SerializedName("_id")
     private String id;
@@ -124,6 +127,106 @@ public class BusSchedule {
         this.arrivalLocation = arrivalLocation;
     }
 
+    // Parcelable implementation
+    protected BusSchedule(Parcel in) {
+        id = in.readString();
+        busOperator = in.readString();
+        tripCode = in.readString();
+        route = in.readString();
+        if (in.readByte() == 0) {
+            timeRoute = null;
+        } else {
+            timeRoute = in.readInt();
+        }
+        price = in.readDouble();
+        long tmpDate = in.readLong();
+        date = tmpDate == -1 ? null : new Date(tmpDate);
+        timeStart = in.readString();
+        benXeKhoiHanh = in.readString();
+        timeEnd = in.readString();
+        benXeDichDen = in.readString();
+        if (in.readByte() == 0) {
+            availableSeats = null;
+        } else {
+            availableSeats = in.readInt();
+        }
+        seatSelected = in.createStringArrayList();
+        status = in.readString();
+        long tmpCreatedAt = in.readLong();
+        createdAt = tmpCreatedAt == -1 ? null : new Date(tmpCreatedAt);
+        long tmpUpdatedAt = in.readLong();
+        updatedAt = tmpUpdatedAt == -1 ? null : new Date(tmpUpdatedAt);
+        busOperatorDetail = in.readParcelable(BusOperators.class.getClassLoader());
+        benXeKhoiHanhDetail = in.readParcelable(BusStation.class.getClassLoader());
+        benXeDichDenDetail = in.readParcelable(BusStation.class.getClassLoader());
+        busName = in.readString();
+        busInfo = in.readString();
+        departureTime = in.readString();
+        departureLocation = in.readString();
+        duration = in.readString();
+        arrivalTime = in.readString();
+        arrivalLocation = in.readString();
+        formattedPrice = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(busOperator);
+        dest.writeString(tripCode);
+        dest.writeString(route);
+        if (timeRoute == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(timeRoute);
+        }
+        dest.writeDouble(price);
+        dest.writeLong(date != null ? date.getTime() : -1);
+        dest.writeString(timeStart);
+        dest.writeString(benXeKhoiHanh);
+        dest.writeString(timeEnd);
+        dest.writeString(benXeDichDen);
+        if (availableSeats == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(availableSeats);
+        }
+        dest.writeStringList(seatSelected);
+        dest.writeString(status);
+        dest.writeLong(createdAt != null ? createdAt.getTime() : -1);
+        dest.writeLong(updatedAt != null ? updatedAt.getTime() : -1);
+        dest.writeParcelable(busOperatorDetail, flags);
+        dest.writeParcelable(benXeKhoiHanhDetail, flags);
+        dest.writeParcelable(benXeDichDenDetail, flags);
+        dest.writeString(busName);
+        dest.writeString(busInfo);
+        dest.writeString(departureTime);
+        dest.writeString(departureLocation);
+        dest.writeString(duration);
+        dest.writeString(arrivalTime);
+        dest.writeString(arrivalLocation);
+        dest.writeString(formattedPrice);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<BusSchedule> CREATOR = new Creator<BusSchedule>() {
+        @Override
+        public BusSchedule createFromParcel(Parcel in) {
+            return new BusSchedule(in);
+        }
+
+        @Override
+        public BusSchedule[] newArray(int size) {
+            return new BusSchedule[size];
+        }
+    };
+
     public String getBusName() {
         return busName;
     }
@@ -202,5 +305,9 @@ public class BusSchedule {
 
     public void setFormattedPrice(String formattedPrice) {
         this.formattedPrice = formattedPrice;
+    }
+
+    public BusOperators getBusOperator() {
+        return busOperatorDetail;
     }
 } 

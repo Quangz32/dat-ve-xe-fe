@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp">
+    
+    <LinearLayout
+        android:id="@+id/seatLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/seat_background"
+        android:padding="10dp">
+        
+        <TextView
+            android:id="@+id/tvSeatId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="A1"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
+        
+        <TextView
+            android:id="@+id/tvSeatPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="400K"
+            android:textColor="#757575"
+            android:textSize="12sp" />
+    </LinearLayout>
+    
+</FrameLayout> 

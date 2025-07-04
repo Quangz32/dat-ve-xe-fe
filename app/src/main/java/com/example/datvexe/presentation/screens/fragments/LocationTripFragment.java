@@ -68,10 +68,7 @@ public class LocationTripFragment extends Fragment {
     }
 
     private void setupViews() {
-        // Set today's date as default
         binding.edtDate.setText(dateFormatter.format(calendar.getTime()));
-        
-        // Set default passenger count
         binding.edtPassengerCount.setText("1");
     }
 

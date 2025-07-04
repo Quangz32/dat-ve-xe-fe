@@ -1,5 +1,7 @@
 package com.example.datvexe.data.mapper;
 
+import android.util.Log;
+
 import com.example.datvexe.data.remote.dto.BusOperatorDto;
 import com.example.datvexe.data.remote.dto.BusStationDto;
 import com.example.datvexe.data.remote.dto.ScheduleResponseDto;
@@ -7,6 +9,7 @@ import com.example.datvexe.data.remote.dto.TypeBusDto;
 import com.example.datvexe.domain.model.BusOperators;
 import com.example.datvexe.domain.model.BusSchedule;
 import com.example.datvexe.domain.model.BusStation;
+import com.example.datvexe.domain.model.TypeBus;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 
@@ -46,6 +49,9 @@ public class ScheduleMapper {
 
         // Thông tin loại xe và số ghế
         String busInfo = "";
+        String busTypeCode = "BUS34"; // Mã loại xe mặc định
+        List<String> busTypes = new ArrayList<>();
+        
         if (busOperatorDto != null) {
             try {
                 Object typesObj = busOperatorDto.getTypes();
@@ -57,11 +63,15 @@ public class ScheduleMapper {
                         // Lấy thông tin từ LinkedTreeMap
                         String typeName = typeMap.containsKey("name") ? typeMap.get("name").toString() : "";
                         String seats = typeMap.containsKey("seats") ? typeMap.get("seats").toString() : "";
+                        String code = typeMap.containsKey("code") ? typeMap.get("code").toString() : "BUS34";
                         
                         busInfo = typeName;
                         if (!seats.isEmpty()) {
                             busInfo += " (" + seats + " chỗ)";
                         }
+                        
+                        busTypeCode = code;
+                        busTypes.add(code);
                     } else {
                         // Fallback khi không xử lý được type
                         busInfo = busOperatorDto.getName() + " Bus";
@@ -89,6 +99,52 @@ public class ScheduleMapper {
             arrivalTime = timeFormat.format(calendar.getTime());
         }
 
+        // Tạo đối tượng BusOperators
+        BusOperators busOperator = null;
+        if (busOperatorDto != null) {
+            busOperator = new BusOperators();
+            busOperator.setId(busOperatorDto.getId());
+            busOperator.setName(busOperatorDto.getName());
+            busOperator.setPhone(busOperatorDto.getPhone());
+            busOperator.setBienSoXe(busOperatorDto.getBienSoXe());
+            busOperator.setTypes(busTypeCode); // Lưu mã loại xe
+            busOperator.setTypesList(busTypes); // Lưu danh sách mã loại xe
+            
+            // Tạo đối tượng TypeBus nếu có thông tin
+            if (busOperatorDto.getTypes() instanceof LinkedTreeMap) {
+                LinkedTreeMap<?, ?> typeMap = (LinkedTreeMap<?, ?>) busOperatorDto.getTypes();
+                TypeBus typeBus = new TypeBus();
+                typeBus.setCode(busTypeCode);
+                typeBus.setName(typeMap.containsKey("name") ? typeMap.get("name").toString() : "");
+                if (typeMap.containsKey("seats")) {
+                    try {
+                        typeBus.setSeats(Integer.parseInt(typeMap.get("seats").toString()));
+                    } catch (NumberFormatException e) {
+                        typeBus.setSeats(34); // Mặc định 34 chỗ
+                    }
+                }
+                busOperator.setTypeBusDetail(typeBus);
+            }
+        }
+
+        BusStation departureStation = null;
+        if (departureStationDto != null) {
+            departureStation = new BusStation();
+            departureStation.setId(departureStationDto.getId());
+            departureStation.setMaBenXe(departureStationDto.getMaBenXe());
+            departureStation.setTenBenXe(departureStationDto.getTenBenXe());
+            departureStation.setName(departureStationDto.getTenBenXe());
+        }
+
+        BusStation arrivalStation = null;
+        if (arrivalStationDto != null) {
+            arrivalStation = new BusStation();
+            arrivalStation.setId(arrivalStationDto.getId());
+            arrivalStation.setMaBenXe(arrivalStationDto.getMaBenXe());
+            arrivalStation.setTenBenXe(arrivalStationDto.getTenBenXe());
+            arrivalStation.setName(arrivalStationDto.getTenBenXe());
+        }
+
         return BusSchedule.builder()
                 .id(dto.getId())
                 .busOperator(busOperatorDto != null ? busOperatorDto.getId() : null)
@@ -106,7 +162,6 @@ public class ScheduleMapper {
                 .status(dto.getStatus())
                 .createdAt(dto.getCreatedAt())
                 .updatedAt(dto.getUpdatedAt())
-                // Set display fields
                 .busName(busOperatorDto != null ? busOperatorDto.getName() : "")
                 .busInfo(busInfo)
                 .departureTime(departureTime)
@@ -114,8 +169,10 @@ public class ScheduleMapper {
                 .duration(duration)
                 .arrivalTime(arrivalTime)
                 .arrivalLocation(arrivalStationDto != null ? arrivalStationDto.getTenBenXe() : "")
-                // Thêm thông tin hiển thị
                 .formattedPrice(formattedPrice)
+                .busOperatorDetail(busOperator)
+                .benXeKhoiHanhDetail(departureStation)
+                .benXeDichDenDetail(arrivalStation)
                 .build();
     }
 
