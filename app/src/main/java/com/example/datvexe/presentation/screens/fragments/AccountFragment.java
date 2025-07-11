@@ -58,6 +58,17 @@ public class AccountFragment extends Fragment {
             viewModel.logout();
             mainActivity.goToAuthActivity();
         });
+        // Thêm sự kiện mở SettingsFragment
+        binding.tvSettings.setOnClickListener(v -> {
+            mainActivity.setActionBarTitle(TAB_INDEX, "Cài đặt");
+            mainActivity.setShowOrHideNavigateBack(TAB_INDEX, true);
+            mainActivity.navigateToFragment(new SettingsFragment());
+        });
+        binding.tvBusOperatorInfo.setOnClickListener(v -> {
+            mainActivity.setActionBarTitle(TAB_INDEX, "Thông tin nhà xe");
+            mainActivity.setShowOrHideNavigateBack(TAB_INDEX, true);
+            mainActivity.navigateToFragment(new BusOperatorInfoFragment());
+        });
         return binding.getRoot();
     }
 }
