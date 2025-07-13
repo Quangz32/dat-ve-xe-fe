@@ -69,6 +69,11 @@ public class AccountFragment extends Fragment {
             mainActivity.setShowOrHideNavigateBack(TAB_INDEX, true);
             mainActivity.navigateToFragment(new BusOperatorInfoFragment());
         });
+        binding.tvNews.setOnClickListener(v -> {
+            mainActivity.setActionBarTitle(TAB_INDEX, "Tin tức");
+            mainActivity.setShowOrHideNavigateBack(TAB_INDEX, true);
+            mainActivity.navigateToFragment(new NewsFragment());
+        });
         return binding.getRoot();
     }
 }
