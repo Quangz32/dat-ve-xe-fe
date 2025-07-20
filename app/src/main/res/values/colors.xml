@@ -145,4 +145,5 @@
     <color name="date_selected_background">@color/coral</color>
     <color name="date_text_color">#1C1B1F</color>
     <color name="date_selected_text_color">#FFFFFF</color>
+    <color name="teal_700">#018786</color>
 </resources>
