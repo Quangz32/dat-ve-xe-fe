@@ -23,6 +23,7 @@ import com.example.datvexe.domain.usecase.auth.LoginUseCase;
 import com.example.datvexe.domain.usecase.auth.LogoutUseCase;
 import com.example.datvexe.domain.usecase.auth.RegisterUseCase;
 import com.example.datvexe.domain.usecase.booking.GetBookingByUserIdUseCase;
+import com.example.datvexe.domain.usecase.booking.GetDiscountsUseCase;
 import com.example.datvexe.domain.usecase.notification.GetNotificationUseCase;
 import com.example.datvexe.domain.usecase.user.GetUserProfileUseCase;
 import com.google.gson.Gson;
@@ -182,6 +183,11 @@ public class AppModule {
     public GetBookingByUserIdUseCase provideGetBookingByUserIdUseCase(
             BookingRepository bookingRepository) {
         return new GetBookingByUserIdUseCase(bookingRepository);
+    }
+
+    @Provides
+    public GetDiscountsUseCase provideGetDiscountsUseCase(BookingRepository bookingRepository) {
+        return new GetDiscountsUseCase(bookingRepository);
     }
 
     @Provides
