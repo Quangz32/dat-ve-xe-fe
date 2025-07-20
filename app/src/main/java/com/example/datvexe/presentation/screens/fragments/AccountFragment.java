@@ -96,9 +96,10 @@ public class AccountFragment extends Fragment {
             mainActivity.navigateToFragment(new NewsFragment());
         });
         binding.btnPromotion.setOnClickListener(v -> {
-            mainActivity.setActionBarTitle(TAB_INDEX, "Khuyến mãi");
-            mainActivity.setShowOrHideNavigateBack(TAB_INDEX, true);
-            mainActivity.navigateToFragment(new NotificationFragment());
+            mainActivity.selectTab(2);
+            // mainActivity.setActionBarTitle(TAB_INDEX, "Khuyến mãi");
+            // mainActivity.setShowOrHideNavigateBack(TAB_INDEX, true);
+            // mainActivity.navigateToFragment(new NotificationFragment());
         });
         return binding.getRoot();
     }

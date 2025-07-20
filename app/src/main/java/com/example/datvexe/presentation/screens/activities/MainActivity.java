@@ -202,4 +202,8 @@ public class MainActivity extends AppCompatActivity {
     public interface TabNavigateBackCallback {
         void onNavigateBack();
     }
+
+    public void selectTab(int tabIndex) {
+        tabLayout.selectTab(tabLayout.getTabAt(tabIndex));
+    }
 }
