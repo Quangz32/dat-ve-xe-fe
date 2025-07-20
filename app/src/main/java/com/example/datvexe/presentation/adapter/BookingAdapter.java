@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
 
 import com.example.datvexe.R;
 import com.example.datvexe.domain.model.BookingTrip;
@@ -22,6 +23,11 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
     private final NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
     private List<BookingTrip> bookings = new ArrayList<>();
+    private final Fragment fragment;
+
+    public BookingAdapter(Fragment fragment) {
+        this.fragment = fragment;
+    }
 
     public void setBookings(List<BookingTrip> bookings) {
         this.bookings = bookings != null ? bookings : new ArrayList<>();
@@ -112,6 +118,21 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
             } else {
                 tvUserName.setText("Khách hàng: N/A");
             }
+
+            // Sự kiện click mở BookingDetailFragment
+            itemView.setOnClickListener(v -> {
+                com.example.datvexe.presentation.screens.fragments.BookingDetailFragment fragmentDetail = new com.example.datvexe.presentation.screens.fragments.BookingDetailFragment();
+                android.os.Bundle bundle = new android.os.Bundle();
+                bundle.putString("booking_code", booking.getCode());
+                fragmentDetail.setArguments(bundle);
+                fragment.requireActivity().findViewById(com.example.datvexe.R.id.frame_layout).setVisibility(android.view.View.VISIBLE);
+                fragment.requireActivity().findViewById(com.example.datvexe.R.id.pager).setVisibility(android.view.View.GONE);
+                fragment.requireActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(com.example.datvexe.R.id.frame_layout, fragmentDetail)
+                        .addToBackStack(null)
+                        .commit();
+            });
         }
 
         private String getStatusText(String status) {

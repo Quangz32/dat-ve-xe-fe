@@ -195,6 +195,10 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
+    public TabLayout getTabLayout() {
+        return tabLayout;
+    }
+
     public interface TabNavigateBackCallback {
         void onNavigateBack();
     }
