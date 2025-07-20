@@ -99,8 +99,6 @@ public class AccountFragment extends Fragment {
             mainActivity.setActionBarTitle(TAB_INDEX, "Khuyến mãi");
             mainActivity.setShowOrHideNavigateBack(TAB_INDEX, true);
             mainActivity.navigateToFragment(new NotificationFragment());
-            tabLayout.setVisibility(View.VISIBLE);
-            viewPager.setVisibility(View.VISIBLE);
         });
         return binding.getRoot();
     }
