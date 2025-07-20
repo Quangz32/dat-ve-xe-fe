@@ -74,7 +74,11 @@ public class AccountFragment extends Fragment {
             mainActivity.setShowOrHideNavigateBack(TAB_INDEX, true);
             mainActivity.navigateToFragment(new FaqFragment());
         });
-        // Các nút khác có thể thêm xử lý tương tự
+        binding.btnLoyalty.setOnClickListener(v -> {
+            mainActivity.setActionBarTitle(TAB_INDEX, "Điểm Loyalty");
+            mainActivity.setShowOrHideNavigateBack(TAB_INDEX, true);
+            mainActivity.navigateToFragment(LoyaltyFragment.newInstance());
+        });
         return binding.getRoot();
     }
 

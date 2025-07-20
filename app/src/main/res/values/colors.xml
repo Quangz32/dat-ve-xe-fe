@@ -160,4 +160,5 @@
     <color name="account_pink_light">#FFE3EC</color>
     <color name="account_yellow_light">#FFF7E3</color>
     <color name="account_gray_icon">#BDBDBD</color>
+    <color name="teal_700">#018786</color>
 </resources>

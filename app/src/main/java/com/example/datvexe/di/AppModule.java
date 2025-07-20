@@ -8,19 +8,24 @@ import com.example.datvexe.data.remote.api.service.AuthApiService;
 import com.example.datvexe.data.remote.api.service.BookingApiService;
 import com.example.datvexe.data.remote.api.service.NotificationApiService;
 import com.example.datvexe.data.remote.api.service.TripApiService;
+import com.example.datvexe.data.remote.api.service.UserApiService;
 import com.example.datvexe.data.repository.AuthRepositoryImpl;
 import com.example.datvexe.data.repository.BookingRepositoryImpl;
 import com.example.datvexe.data.repository.NotificationRepositoryImpl;
 import com.example.datvexe.data.repository.TripRepositoryImpl;
+import com.example.datvexe.data.repository.UserRepositoryImpl;
 import com.example.datvexe.domain.repository.AuthRepository;
 import com.example.datvexe.domain.repository.BookingRepository;
 import com.example.datvexe.domain.repository.NotificationRepository;
 import com.example.datvexe.domain.repository.TripRepository;
+import com.example.datvexe.domain.repository.UserRepository;
 import com.example.datvexe.domain.usecase.auth.LoginUseCase;
 import com.example.datvexe.domain.usecase.auth.LogoutUseCase;
 import com.example.datvexe.domain.usecase.auth.RegisterUseCase;
 import com.example.datvexe.domain.usecase.booking.GetBookingByUserIdUseCase;
+import com.example.datvexe.domain.usecase.booking.GetDiscountsUseCase;
 import com.example.datvexe.domain.usecase.notification.GetNotificationUseCase;
+import com.example.datvexe.domain.usecase.user.GetUserProfileUseCase;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -118,6 +123,12 @@ public class AppModule {
 
     @Provides
     @Singleton
+    public UserApiService provideUserApiService(Retrofit retrofit) {
+        return retrofit.create(UserApiService.class);
+    }
+
+    @Provides
+    @Singleton
     public SharedPreferencesManager provideSharedPreferencesManager(@ApplicationContext Context context) {
         return new SharedPreferencesManager(context);
     }
@@ -148,6 +159,12 @@ public class AppModule {
     }
 
     @Provides
+    @Singleton
+    public UserRepository provideUserRepository(UserApiService apiService) {
+        return new UserRepositoryImpl(apiService);
+    }
+
+    @Provides
     public LoginUseCase provideLoginUseCase(AuthRepository authRepository) {
         return new LoginUseCase(authRepository);
     }
@@ -169,8 +186,18 @@ public class AppModule {
     }
 
     @Provides
+    public GetDiscountsUseCase provideGetDiscountsUseCase(BookingRepository bookingRepository) {
+        return new GetDiscountsUseCase(bookingRepository);
+    }
+
+    @Provides
     public GetNotificationUseCase provideGetNotificationUseCase(
             NotificationRepository notificationRepository) {
         return new GetNotificationUseCase(notificationRepository);
+    }
+
+    @Provides
+    public GetUserProfileUseCase provideGetUserProfileUseCase(UserRepository userRepository) {
+        return new GetUserProfileUseCase(userRepository);
     }
 }
