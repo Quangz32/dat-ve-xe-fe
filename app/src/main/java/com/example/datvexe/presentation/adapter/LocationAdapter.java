@@ -45,14 +45,15 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
     public void onBindViewHolder(@NonNull LocationViewHolder holder, int position) {
         Map.Entry<String, List<String>> location = locations.get(position);
         holder.binding.tvProvinceName.setText(location.getKey());
-
-        BusStationAdapter stationAdapter = new BusStationAdapter();
-        holder.binding.rvStations.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext()));
-        holder.binding.rvStations.setAdapter(stationAdapter);
-        stationAdapter.setStations(location.getValue());
-        stationAdapter.setOnStationClickListener(stationName -> {
+        // Giả lập dữ liệu cho các view còn lại
+        holder.binding.tvPrice.setText("Từ 485.000đ");
+        holder.binding.tvDuration.setText("11h");
+        // Nếu có nhiều ảnh, có thể set ảnh động ở đây
+        // holder.binding.imgRoute.setImageResource(...);
+        // Xử lý click nếu cần
+        holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
-                listener.onStationClick(stationName);
+                listener.onStationClick(location.getKey());
             }
         });
     }

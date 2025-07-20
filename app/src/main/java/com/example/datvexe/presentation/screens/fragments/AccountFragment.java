@@ -49,31 +49,25 @@ public class AccountFragment extends Fragment {
             mainActivity.setShowOrHideNavigateBack(TAB_INDEX, false);
             mainActivity.navigateToMain();
         });
-        binding.tvChatWithAdmin.setOnClickListener(v -> {
+
+        // Bind dữ liệu từ ViewModel
+        viewModel.getUserName().observe(getViewLifecycleOwner(), name -> binding.tvUserName.setText(name));
+        viewModel.getPhoneNumber().observe(getViewLifecycleOwner(), phone -> binding.tvPhoneNumber.setText(phone));
+        viewModel.getSilver().observe(getViewLifecycleOwner(), silver -> binding.tvSilver.setText(String.valueOf(silver)));
+        viewModel.getPromotion().observe(getViewLifecycleOwner(), promo -> binding.tvPromotion.setText(String.valueOf(promo)));
+        // viewModel.getFriends().observe(getViewLifecycleOwner(), friends -> binding.tvFriends.setText(String.valueOf(friends)));
+        // viewModel.getNews().observe(getViewLifecycleOwner(), news -> binding.tvNews.setText(String.valueOf(news)));
+
+        binding.btnChatWithAdmin.setOnClickListener(v -> {
             mainActivity.setActionBarTitle(TAB_INDEX, "Chat với quản trị viên");
             mainActivity.setShowOrHideNavigateBack(TAB_INDEX, true);
             mainActivity.navigateToFragment(new ChatWithAdminFragment());
         });
-        binding.tvLogout.setOnClickListener(v -> {
+        binding.btnLogout.setOnClickListener(v -> {
             viewModel.logout();
             mainActivity.goToAuthActivity();
         });
-        // Thêm sự kiện mở SettingsFragment
-        binding.tvSettings.setOnClickListener(v -> {
-            mainActivity.setActionBarTitle(TAB_INDEX, "Cài đặt");
-            mainActivity.setShowOrHideNavigateBack(TAB_INDEX, true);
-            mainActivity.navigateToFragment(new SettingsFragment());
-        });
-        binding.tvBusOperatorInfo.setOnClickListener(v -> {
-            mainActivity.setActionBarTitle(TAB_INDEX, "Thông tin nhà xe");
-            mainActivity.setShowOrHideNavigateBack(TAB_INDEX, true);
-            mainActivity.navigateToFragment(new BusOperatorInfoFragment());
-        });
-        binding.tvNews.setOnClickListener(v -> {
-            mainActivity.setActionBarTitle(TAB_INDEX, "Tin tức");
-            mainActivity.setShowOrHideNavigateBack(TAB_INDEX, true);
-            mainActivity.navigateToFragment(new NewsFragment());
-        });
+        // Các nút khác có thể thêm xử lý tương tự
         return binding.getRoot();
     }
 }
