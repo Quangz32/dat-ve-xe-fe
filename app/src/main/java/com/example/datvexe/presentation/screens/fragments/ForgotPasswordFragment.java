@@ -53,7 +53,7 @@ public class ForgotPasswordFragment extends Fragment {
 
         viewModel.getForgotPasswordResult().observe(getViewLifecycleOwner(), result -> {
             if (result.isSuccess()) {
-                Toast.makeText(getContext(), "Vui lòng kiểm tra email để đặt lại mật khẩu!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Mật khẩu mới của bạn là: 123456", Toast.LENGTH_LONG).show();
                 requireActivity().getSupportFragmentManager().popBackStack();
             } else {
                 Toast.makeText(getContext(), result.getErrorMessage(), Toast.LENGTH_LONG).show();
