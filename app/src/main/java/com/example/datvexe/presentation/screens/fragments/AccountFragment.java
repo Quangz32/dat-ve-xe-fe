@@ -8,12 +8,14 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.datvexe.databinding.FragmentAccountBinding;
 import com.example.datvexe.presentation.screens.activities.MainActivity;
 import com.example.datvexe.presentation.viewmodel.AccountViewModel;
 
 import dagger.hilt.android.AndroidEntryPoint;
+import androidx.annotation.Nullable;
 
 @AndroidEntryPoint
 public class AccountFragment extends Fragment {
@@ -67,7 +69,27 @@ public class AccountFragment extends Fragment {
             viewModel.logout();
             mainActivity.goToAuthActivity();
         });
+        binding.btnFaq.setOnClickListener(v -> {
+            mainActivity.setActionBarTitle(TAB_INDEX, "Câu hỏi thường gặp");
+            mainActivity.setShowOrHideNavigateBack(TAB_INDEX, true);
+            mainActivity.navigateToFragment(new FaqFragment());
+        });
         // Các nút khác có thể thêm xử lý tương tự
         return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (requireActivity() instanceof AppCompatActivity) {
+            AppCompatActivity activity = (AppCompatActivity) requireActivity();
+            if (activity.getSupportActionBar() != null) {
+                activity.getSupportActionBar().show();
+                activity.getSupportActionBar().setTitle("Tài khoản");
+            }
+            // Đảm bảo Toolbar của Activity cũng hiện lên
+            View toolbar = activity.findViewById(com.example.datvexe.R.id.toolbar);
+            if (toolbar != null) toolbar.setVisibility(View.VISIBLE);
+        }
     }
 }
