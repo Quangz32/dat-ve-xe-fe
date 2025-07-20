@@ -79,6 +79,29 @@ public class AccountFragment extends Fragment {
             mainActivity.setShowOrHideNavigateBack(TAB_INDEX, true);
             mainActivity.navigateToFragment(LoyaltyFragment.newInstance());
         });
+        // Thêm sự kiện mở SettingsFragment
+        binding.btnSettings.setOnClickListener(v -> {
+            mainActivity.setActionBarTitle(TAB_INDEX, "Cài đặt");
+            mainActivity.setShowOrHideNavigateBack(TAB_INDEX, true);
+            mainActivity.navigateToFragment(new SettingsFragment());
+        });
+        binding.btnBusOperatorInfo.setOnClickListener(v -> {
+            mainActivity.setActionBarTitle(TAB_INDEX, "Thông tin nhà xe");
+            mainActivity.setShowOrHideNavigateBack(TAB_INDEX, true);
+            mainActivity.navigateToFragment(new BusOperatorInfoFragment());
+        });
+        binding.btnNews.setOnClickListener(v -> {
+            mainActivity.setActionBarTitle(TAB_INDEX, "Tin tức");
+            mainActivity.setShowOrHideNavigateBack(TAB_INDEX, true);
+            mainActivity.navigateToFragment(new NewsFragment());
+        });
+        binding.btnPromotion.setOnClickListener(v -> {
+            mainActivity.setActionBarTitle(TAB_INDEX, "Khuyến mãi");
+            mainActivity.setShowOrHideNavigateBack(TAB_INDEX, true);
+            mainActivity.navigateToFragment(new NotificationFragment());
+            tabLayout.setVisibility(View.VISIBLE);
+            viewPager.setVisibility(View.VISIBLE);
+        });
         return binding.getRoot();
     }
 
