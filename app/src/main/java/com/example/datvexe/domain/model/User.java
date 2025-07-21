@@ -78,6 +78,10 @@ public class User {
     // Nested objects for populated data
     private Role roleDetail;
 
+    public String getId() {
+        return id;
+    }
+
     // Enum cho giới tính
     public enum Gender {
         MALE("male"),

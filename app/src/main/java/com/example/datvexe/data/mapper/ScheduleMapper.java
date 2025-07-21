@@ -87,7 +87,7 @@ public class ScheduleMapper {
 
         // Tính toán thời gian đến dựa trên thời gian khởi hành và thời gian di chuyển
         String arrivalTime = "";
-        String departureTime = formatDate(dto.getTimeStart());
+        Date departureTime = dto.getTimeStart();
 
         if (dto.getTimeEnd() != null) {
             arrivalTime = formatDate(dto.getTimeEnd());
@@ -153,9 +153,9 @@ public class ScheduleMapper {
                 .timeRoute(dto.getTimeRoute() != null ? dto.getTimeRoute().intValue() : null)
                 .price(dto.getPrice() != null ? dto.getPrice().doubleValue() : 0)
                 .date(dto.getDate())
-                .timeStart(formatDate(dto.getTimeStart()))
+                .timeStart(dto.getTimeStart())
                 .benXeKhoiHanh(departureStationDto != null ? departureStationDto.getMaBenXe() : null)
-                .timeEnd(formatDate(dto.getTimeEnd()))
+                .timeEnd(dto.getTimeEnd())
                 .benXeDichDen(arrivalStationDto != null ? arrivalStationDto.getMaBenXe() : null)
                 .availableSeats(dto.getAvailableSeats() != null ? dto.getAvailableSeats().intValue() : 0)
                 .seatSelected(dto.getSeatSelected())

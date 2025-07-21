@@ -11,6 +11,14 @@ public class SharedPreferencesManager {
     private static final String KEY_USER_ID = "user_id";
     private static final String KEY_USERNAME = "username";
     private static final String KEY_PASSWORD = "password";
+    
+    // User profile keys
+    private static final String KEY_USER_EMAIL = "user_email";
+    private static final String KEY_USER_FULLNAME = "user_fullname";
+    private static final String KEY_USER_PHONE = "user_phone";
+    private static final String KEY_USER_ADDRESS = "user_address";
+    private static final String KEY_USER_AVATAR = "user_avatar";
+    private static final String KEY_USER_LOYALTY_POINTS = "user_loyalty_points";
 
     // Keys for bus search params
     private static final String KEY_FROM_STATION_ID = "from_station_id";
@@ -73,6 +81,71 @@ public class SharedPreferencesManager {
 
     public String getPassword() {
         return sharedPreferences.getString(KEY_PASSWORD, null);
+    }
+
+    // User profile methods
+    public void saveUserEmail(String email) {
+        editor.putString(KEY_USER_EMAIL, email);
+        editor.apply();
+    }
+
+    public String getUserEmail() {
+        return sharedPreferences.getString(KEY_USER_EMAIL, "");
+    }
+
+    public void saveUserFullname(String fullname) {
+        editor.putString(KEY_USER_FULLNAME, fullname);
+        editor.apply();
+    }
+
+    public String getUserFullname() {
+        return sharedPreferences.getString(KEY_USER_FULLNAME, "");
+    }
+
+    public void saveUserPhone(String phone) {
+        editor.putString(KEY_USER_PHONE, phone);
+        editor.apply();
+    }
+
+    public String getUserPhone() {
+        return sharedPreferences.getString(KEY_USER_PHONE, "");
+    }
+
+    public void saveUserAddress(String address) {
+        editor.putString(KEY_USER_ADDRESS, address);
+        editor.apply();
+    }
+
+    public String getUserAddress() {
+        return sharedPreferences.getString(KEY_USER_ADDRESS, "");
+    }
+
+    public void saveUserAvatar(String avatar) {
+        editor.putString(KEY_USER_AVATAR, avatar);
+        editor.apply();
+    }
+
+    public String getUserAvatar() {
+        return sharedPreferences.getString(KEY_USER_AVATAR, "");
+    }
+
+    public void saveUserLoyaltyPoints(int points) {
+        editor.putInt(KEY_USER_LOYALTY_POINTS, points);
+        editor.apply();
+    }
+
+    public int getUserLoyaltyPoints() {
+        return sharedPreferences.getInt(KEY_USER_LOYALTY_POINTS, 0);
+    }
+
+    // Save all user profile data at once
+    public void saveUserProfile(String email, String fullname, String phone, String address, String avatar, int loyaltyPoints) {
+        saveUserEmail(email);
+        saveUserFullname(fullname);
+        saveUserPhone(phone);
+        saveUserAddress(address);
+        saveUserAvatar(avatar);
+        saveUserLoyaltyPoints(loyaltyPoints);
     }
 
     // Save bus search parameters

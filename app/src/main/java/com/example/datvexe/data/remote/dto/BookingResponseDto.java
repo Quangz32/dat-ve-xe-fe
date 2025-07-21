@@ -4,7 +4,6 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 import java.util.List;
-
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -52,4 +51,6 @@ public class BookingResponseDto {
 
     @SerializedName("__v")
     private Integer version;
-} 
+
+
+}

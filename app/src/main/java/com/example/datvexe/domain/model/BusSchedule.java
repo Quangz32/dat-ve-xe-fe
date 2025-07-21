@@ -46,13 +46,13 @@ public class BusSchedule implements Parcelable {
     private Date date;
 
     @NotBlank(message = "Time start không được để trống")
-    private String timeStart;
+    private Date timeStart;
 
     @NotBlank(message = "Bến xe khởi hành không được để trống")
     private String benXeKhoiHanh; // Reference to BusStation ID
 
     @NotBlank(message = "Time end không được để trống")
-    private String timeEnd;
+    private Date timeEnd;
 
     @NotBlank(message = "Bến xe đích đến không được để trống")
     private String benXeDichDen; // Reference to BusStation ID
@@ -76,37 +76,27 @@ public class BusSchedule implements Parcelable {
     private BusStation benXeKhoiHanhDetail;
     private BusStation benXeDichDenDetail;
 
-    // Enum cho trạng thái chuyến xe
-    public enum ScheduleStatus {
-        SCHEDULED("scheduled"),
-        DEPARTED("departed"),
-        ARRIVED("arrived"),
-        CANCELLED("cancelled");
+    // Thay thế phương thức getDate() trả về int bằng trả về Date
+    public Date getDate() {
+        return date;
+    }
 
-        private final String value;
+    public String getId(){
+        return id;
+    }
 
-        ScheduleStatus(String value) {
-            this.value = value;
-        }
+    public String getBenXeKhoiHanh(){
+        return benXeKhoiHanh;
+    }
 
-        public static ScheduleStatus fromValue(String value) {
-            for (ScheduleStatus status : ScheduleStatus.values()) {
-                if (status.value.equals(value)) {
-                    return status;
-                }
-            }
-            return SCHEDULED;
-        }
-
-        public String getValue() {
-            return value;
-        }
+    public  String getBenXeDichDen(){
+        return benXeDichDen;
     }
 
     // Display fields
     private String busName;
     private String busInfo;
-    private String departureTime;
+    private Date departureTime;
     private String departureLocation;
     private String duration;
     private String arrivalTime;
@@ -114,8 +104,8 @@ public class BusSchedule implements Parcelable {
     private String formattedPrice; // Định dạng giá để hiển thị
 
     public BusSchedule(String busName, String route, String busInfo, double price,
-                      String departureTime, String departureLocation, String duration,
-                      String arrivalTime, String arrivalLocation) {
+                       Date departureTime, String departureLocation, String duration,
+                       String arrivalTime, String arrivalLocation) {
         this.busName = busName;
         this.route = route;
         this.busInfo = busInfo;
@@ -125,6 +115,7 @@ public class BusSchedule implements Parcelable {
         this.duration = duration;
         this.arrivalTime = arrivalTime;
         this.arrivalLocation = arrivalLocation;
+
     }
 
     // Parcelable implementation
@@ -141,9 +132,9 @@ public class BusSchedule implements Parcelable {
         price = in.readDouble();
         long tmpDate = in.readLong();
         date = tmpDate == -1 ? null : new Date(tmpDate);
-        timeStart = in.readString();
+        timeStart = tmpDate == -1 ? null : new Date(tmpDate);
         benXeKhoiHanh = in.readString();
-        timeEnd = in.readString();
+        timeEnd =  tmpDate == -1 ? null : new Date(tmpDate);
         benXeDichDen = in.readString();
         if (in.readByte() == 0) {
             availableSeats = null;
@@ -161,7 +152,8 @@ public class BusSchedule implements Parcelable {
         benXeDichDenDetail = in.readParcelable(BusStation.class.getClassLoader());
         busName = in.readString();
         busInfo = in.readString();
-        departureTime = in.readString();
+        Long tmpDepartmentTime = in.readLong();
+        departureTime = tmpDepartmentTime == -1 ?null: new Date(tmpDepartmentTime);
         departureLocation = in.readString();
         duration = in.readString();
         arrivalTime = in.readString();
@@ -183,9 +175,9 @@ public class BusSchedule implements Parcelable {
         }
         dest.writeDouble(price);
         dest.writeLong(date != null ? date.getTime() : -1);
-        dest.writeString(timeStart);
+        dest.writeLong(timeStart !=null?date.getTime() : -1);
         dest.writeString(benXeKhoiHanh);
-        dest.writeString(timeEnd);
+        dest.writeLong(timeEnd!=null ? date.getTime() : -1);
         dest.writeString(benXeDichDen);
         if (availableSeats == null) {
             dest.writeByte((byte) 0);
@@ -202,7 +194,7 @@ public class BusSchedule implements Parcelable {
         dest.writeParcelable(benXeDichDenDetail, flags);
         dest.writeString(busName);
         dest.writeString(busInfo);
-        dest.writeString(departureTime);
+        dest.writeLong(departureTime != null ? updatedAt.getTime() : -1);
         dest.writeString(departureLocation);
         dest.writeString(duration);
         dest.writeString(arrivalTime);
@@ -255,15 +247,19 @@ public class BusSchedule implements Parcelable {
         return price;
     }
 
+    public Date getTimeStart(){return timeStart;}
+
+
     public void setPrice(double price) {
         this.price = price;
     }
 
-    public String getDepartureTime() {
+    public Date getDepartureTime() {
         return departureTime;
     }
 
-    public void setDepartureTime(String departureTime) {
+
+    public void setDepartureTime(Date departureTime) {
         this.departureTime = departureTime;
     }
 
@@ -298,9 +294,9 @@ public class BusSchedule implements Parcelable {
     public void setArrivalLocation(String arrivalLocation) {
         this.arrivalLocation = arrivalLocation;
     }
-    
+
     public String getFormattedPrice() {
-        return formattedPrice != null ? formattedPrice : String.valueOf((int)price) + "đ";
+        return formattedPrice != null ? formattedPrice : String.valueOf((int) price) + "đ";
     }
 
     public void setFormattedPrice(String formattedPrice) {

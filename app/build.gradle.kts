@@ -52,6 +52,9 @@ dependencies {
 
     // CircleIndicator for ViewPager2
     implementation("me.relex:circleindicator:2.1.6")
+    implementation(libs.legacy.support.v4)
+    implementation(libs.lifecycle.livedata.ktx)
+    implementation(libs.lifecycle.viewmodel.ktx)
 
     // Lombok
     compileOnly("org.projectlombok:lombok:1.18.30")

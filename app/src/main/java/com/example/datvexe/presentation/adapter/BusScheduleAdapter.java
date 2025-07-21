@@ -89,7 +89,7 @@ public class BusScheduleAdapter extends RecyclerView.Adapter<BusScheduleAdapter.
             binding.tvPrice.setText(formatPrice(schedule.getPrice()) + "đ");
             
             // Departure and arrival info
-            binding.tvDepartureTime.setText(schedule.getDepartureTime());
+            binding.tvDepartureTime.setText(schedule.getDepartureTime().toString());
             binding.tvDepartureLocation.setText(schedule.getDepartureLocation());
             binding.tvDuration.setText(schedule.getDuration());
             binding.tvArrivalTime.setText(schedule.getArrivalTime());

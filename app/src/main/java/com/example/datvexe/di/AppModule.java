@@ -76,9 +76,12 @@ public class AppModule {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         builder.addInterceptor(loggingInterceptor);
         builder.addInterceptor(authInterceptor);
-        builder.connectTimeout(30, TimeUnit.SECONDS);
-        builder.readTimeout(30, TimeUnit.SECONDS);
-        builder.writeTimeout(30, TimeUnit.SECONDS);
+        // Giảm timeout để tránh ANR
+        builder.connectTimeout(5, TimeUnit.SECONDS);
+        builder.readTimeout(5, TimeUnit.SECONDS);
+        builder.writeTimeout(5, TimeUnit.SECONDS);
+        // Thêm retry interceptor để tránh timeout
+        builder.retryOnConnectionFailure(true);
         return builder.build();
     }
 
@@ -170,7 +173,8 @@ public class AppModule {
 
     @Provides
     public GetNotificationUseCase provideGetNotificationUseCase(
-            NotificationRepository notificationRepository) {
+         NotificationRepository notificationRepository) {
         return new GetNotificationUseCase(notificationRepository);
     }
+
 }

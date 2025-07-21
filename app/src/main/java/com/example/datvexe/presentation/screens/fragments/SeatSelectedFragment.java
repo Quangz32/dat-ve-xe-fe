@@ -21,7 +21,6 @@ import com.example.datvexe.domain.model.BusSchedule;
 import com.example.datvexe.presentation.adapter.SeatAdapter;
 import com.example.datvexe.presentation.model.Seat;
 import com.example.datvexe.presentation.screens.activities.MainActivity;
-import com.example.datvexe.presentation.screens.fragments.BookingConfirmFragment;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -156,8 +155,8 @@ public class SeatSelectedFragment extends Fragment {
 
     private void initViews(View view) {
         recyclerViewSeats = view.findViewById(R.id.recyclerViewSeats);
-        tvTotalPrice = view.findViewById(R.id.tvTotalPrice);
-        btnContinue = view.findViewById(R.id.btnContinue);
+        tvTotalPrice = view.findViewById(R.id.tv_total);
+        btnContinue = view.findViewById(R.id.btnPay);
         tabFloor1 = view.findViewById(R.id.tabFloor1);
         tabFloor2 = view.findViewById(R.id.tabFloor2);
         tvBusInfo = view.findViewById(R.id.tvBusInfo);
@@ -339,18 +338,11 @@ public class SeatSelectedFragment extends Fragment {
                 return;
             }
             
-            // Navigate to BookingConfirmFragment with all required data
-            BookingConfirmFragment confirmFragment = BookingConfirmFragment.newInstance(
-                schedule,
-                new ArrayList<>(selectedSeats),
-                totalPrice,
-                busType
-            );
+            // Hiển thị loading state
+            setLoadingState(true);
             
-            // Navigate to the next fragment using MainActivity's method
-            if (requireActivity() instanceof MainActivity) {
-                ((MainActivity) requireActivity()).navigateToFragment(confirmFragment);
-            }
+            // Gọi API lấy thông tin khách hàng trước khi chuyển màn hình
+            loadCustomerInfoAndNavigate();
         });
     }
 
@@ -373,6 +365,7 @@ public class SeatSelectedFragment extends Fragment {
             ((MainActivity) requireActivity()).navigateToFragment(routeDetailFragment);
         }
     }
+
 
     private void switchFloor(int floor) {
         if (currentFloor == floor) return;
@@ -401,6 +394,7 @@ public class SeatSelectedFragment extends Fragment {
         if (seat.isBooked()) {
             // Ghế đã đặt, không cho chọn và thông báo
             Toast.makeText(requireContext(), "Ghế " + seat.getId() + " đã có người đặt", Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "Attempted to select booked seat: " + seat.getId());
             return;
         }
 
@@ -409,17 +403,22 @@ public class SeatSelectedFragment extends Fragment {
             seat.setSelected(false);
             selectedSeats.remove(seat);
             totalPrice -= seat.getPrice();
+            Log.d(TAG, "Deselected seat: " + seat.getId() + ", Price: " + seat.getPrice());
         } else {
             // Select seat
             seat.setSelected(true);
             selectedSeats.add(seat);
             totalPrice += seat.getPrice();
+            Log.d(TAG, "Selected seat: " + seat.getId() + ", Price: " + seat.getPrice());
         }
         
         // Update UI
         updateTotalPrice();
         seatAdapter.notifyDataSetChanged();
         updateContinueButton();
+        
+        // Log current state
+        Log.d(TAG, "Current state - Selected seats: " + selectedSeats.size() + ", Total price: " + totalPrice);
     }
 
     private void updateTotalPrice() {
@@ -437,5 +436,120 @@ public class SeatSelectedFragment extends Fragment {
             btnContinue.setBackgroundColor(getResources().getColor(R.color.lightgrey));
             btnContinue.setTextColor(getResources().getColor(android.R.color.white));
         }
+    }
+
+    private void setLoadingState(boolean isLoading) {
+        if (isLoading) {
+            btnContinue.setEnabled(false);
+            btnContinue.setText("Đang tải...");
+            btnContinue.setBackgroundColor(getResources().getColor(R.color.lightgrey));
+        } else {
+            btnContinue.setEnabled(!selectedSeats.isEmpty());
+            btnContinue.setText("Tiếp tục");
+            if (!selectedSeats.isEmpty()) {
+                btnContinue.setBackgroundColor(getResources().getColor(R.color.coral));
+                btnContinue.setTextColor(getResources().getColor(android.R.color.white));
+            } else {
+                btnContinue.setBackgroundColor(getResources().getColor(R.color.lightgrey));
+                btnContinue.setTextColor(getResources().getColor(android.R.color.white));
+            }
+        }
+    }
+
+    private void loadCustomerInfoAndNavigate() {
+        // Sử dụng ExecutorService để xử lý trong background
+        java.util.concurrent.ExecutorService executor = java.util.concurrent.Executors.newSingleThreadExecutor();
+        executor.execute(() -> {
+            try {
+                // Lấy thông tin khách hàng từ SharedPreferences
+                String customerInfo = getCustomerInfoFromSharedPreferences();
+
+                // Chuyển về main thread để update UI và navigate
+                requireActivity().runOnUiThread(() -> {
+                    try {
+                        setLoadingState(false);
+
+                        if (customerInfo != null) {
+                            // Chuyển sang BookingConfirmFragment
+                            navigateToBookingConfirm();
+                        } else {
+                            // Hiển thị lỗi nếu không có thông tin khách hàng
+                            Toast.makeText(requireContext(), "Vui lòng đăng nhập để tiếp tục", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (Exception e) {
+                        Log.e(TAG, "Error navigating to booking confirm: " + e.getMessage());
+                        setLoadingState(false);
+                        Toast.makeText(requireContext(), "Lỗi chuyển màn hình", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } catch (Exception e) {
+                Log.e(TAG, "Error loading customer info: " + e.getMessage());
+                requireActivity().runOnUiThread(() -> {
+                    setLoadingState(false);
+                    Toast.makeText(requireContext(), "Lỗi xử lý dữ liệu", Toast.LENGTH_SHORT).show();
+                });
+            } finally {
+                executor.shutdown();
+            }
+        });
+    }
+
+    private String getCustomerInfoFromSharedPreferences() {
+        try {
+            // Kiểm tra user đã đăng nhập chưa
+            if (!sharedPreferencesManager.isLoggedIn()) {
+                Log.d(TAG, "User not logged in");
+                return null;
+            }
+
+            // Lấy thông tin user từ SharedPreferences
+            String email = sharedPreferencesManager.getUserEmail();
+            String fullname = sharedPreferencesManager.getUserFullname();
+            String phone = sharedPreferencesManager.getUserPhone();
+            String address = sharedPreferencesManager.getUserAddress();
+            int loyaltyPoints = sharedPreferencesManager.getUserLoyaltyPoints();
+
+            // Kiểm tra xem có đủ thông tin cơ bản không
+            if (fullname.isEmpty() && phone.isEmpty()) {
+                Log.d(TAG, "User profile incomplete");
+                return null;
+            }
+
+            // Tạo JSON string với thông tin user
+            String customerInfo = String.format(
+                "{\"email\":\"%s\",\"fullname\":\"%s\",\"phone\":\"%s\",\"address\":\"%s\",\"loyaltyPoints\":%d}",
+                email, fullname, phone, address, loyaltyPoints
+            );
+
+            Log.d(TAG, "Customer info loaded from SharedPreferences: " + customerInfo);
+            return customerInfo;
+
+        } catch (Exception e) {
+            Log.e(TAG, "Error getting customer info from SharedPreferences: " + e.getMessage());
+            return null;
+        }
+    }
+
+    private void navigateToBookingConfirm() {
+        ArrayList<String> selectedSeatIds = new ArrayList<>();
+        for (Seat seat : selectedSeats) {
+            selectedSeatIds.add(seat.getId());
+        }
+
+        // Create and navigate to the RouteDetailFragment with current state
+            BookingConfirmFragment bookingConfirmFragment = BookingConfirmFragment.newInstance(
+                    schedule,
+                    busType,
+                    selectedSeatIds,
+                    totalPrice,
+                    currentFloor
+            );
+            ((MainActivity) requireActivity()).navigateToFragment(bookingConfirmFragment);
+        
+    }
+
+    private String formatPrice(int price) {
+        java.text.NumberFormat formatter = java.text.NumberFormat.getNumberInstance(new java.util.Locale("vi", "VN"));
+        return formatter.format(price);
     }
 } 

@@ -148,34 +148,34 @@ public class BusScheduleViewModel extends ViewModel {
     private void loadDummyData() {
         List<BusSchedule> dummySchedules = new ArrayList<>();
         
-        // Thêm một số mục mẫu
-        BusSchedule schedule1 = new BusSchedule(
-            "Sao Việt Express", 
-            "Hà Nội - Lào Cai", 
-            "Giường nằm 34 chỗ",
-            450000,
-            "19:00",
-            "Bến xe Mỹ Đình",
-            "7 giờ",
-            "02:00",
-            "Bến xe Lào Cai"
-        );
-        
-        BusSchedule schedule2 = new BusSchedule(
-            "Phương Trang", 
-            "Sài Gòn - Đà Lạt", 
-            "Giường nằm 40 chỗ",
-            300000,
-            "20:00",
-            "Bến xe Miền Đông",
-            "8 giờ",
-            "04:00",
-            "Bến xe Đà Lạt"
-        );
-        
-        dummySchedules.add(schedule1);
-        dummySchedules.add(schedule2);
-        
+//        // Thêm một số mục mẫu
+//        BusSchedule schedule1 = new BusSchedule(
+//            "Sao Việt Express",
+//            "Hà Nội - Lào Cai",
+//            "Giường nằm 34 chỗ",
+//            450000,
+//            "19:00",
+//            "Bến xe Mỹ Đình",
+//            "7 giờ",
+//            "02:00",
+//            "Bến xe Lào Cai"
+//        );
+//
+//        BusSchedule schedule2 = new BusSchedule(
+//            "Phương Trang",
+//            "Sài Gòn - Đà Lạt",
+//            "Giường nằm 40 chỗ",
+//            300000,
+//            "20:00",
+//            "Bến xe Miền Đông",
+//            "8 giờ",
+//            "04:00",
+//            "Bến xe Đà Lạt"
+//        );
+//
+//        dummySchedules.add(schedule1);
+//        dummySchedules.add(schedule2);
+//
         _schedules.postValue(dummySchedules);
     }
 

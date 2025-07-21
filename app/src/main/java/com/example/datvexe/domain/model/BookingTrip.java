@@ -1,5 +1,11 @@
 package com.example.datvexe.domain.model;
 
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
+
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
@@ -13,6 +19,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 
 @Data
 @Builder
@@ -75,6 +82,63 @@ public class BookingTrip {
     // Nested objects for populated data
     private User userDetail;
     private BusSchedule busScheduleDetail;
+//
+//    public BookingTrip(Parcel in) {
+//        id = in.readString();
+//        code = in.readString();
+//        user = in.readString();
+//        busSchedule = in.readString();
+//        if (in.readByte() == 0) {
+//            surcharge = null;
+//        } else {
+//            surcharge = in.readLong();
+//        }
+//        if (in.readByte() == 0) {
+//            totalPrice = null;
+//        } else {
+//            totalPrice = in.readLong();
+//        }
+//        seats = in.createStringArrayList();
+//        pickupLocation = in.readString();
+//        dropoffLocation = in.readString();
+//        byte tmpExportInvoice = in.readByte();
+//        exportInvoice = tmpExportInvoice == 0 ? null : tmpExportInvoice == 1;
+//        note = in.readString();
+//        status = in.readString();
+//        paymentMethod = in.readString();
+//        reasonCancel = in.readString();
+//        transactionId = in.readString();
+//        busScheduleDetail = in.readParcelable(BusSchedule.class.getClassLoader());
+//    }
+//
+//
+    public String getId(){return id;}
+
+
+    public BookingTrip(String user, String busSchedule, Long totalPrice, List<String> seats, String pickupLocation, String dropoffLocation,  Date departureTime, Boolean exportInvoice, String note, String paymentMethod) {
+        this.user = user;
+        this.busSchedule = busSchedule;
+        this.totalPrice = totalPrice;
+        this.seats = seats;
+        this.pickupLocation = pickupLocation;
+        this.dropoffLocation = dropoffLocation;
+        this.departureTime = departureTime;
+        this.exportInvoice = exportInvoice;
+        this.note = note;
+        this.paymentMethod = paymentMethod;
+
+
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+//    public String getCode() {
+//        return code;
+//    }
+
+
 
     // Enum cho trạng thái booking
     public enum BookingStatus {
@@ -100,11 +164,12 @@ public class BookingTrip {
             return PENDING;
         }
 
+
+
         public String getValue() {
             return value;
         }
     }
-
     // Enum cho phương thức thanh toán
     public enum PaymentMethod {
         CASH("cash"),
