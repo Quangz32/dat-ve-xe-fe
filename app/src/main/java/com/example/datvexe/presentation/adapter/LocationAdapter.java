@@ -45,7 +45,6 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
     public void onBindViewHolder(@NonNull LocationViewHolder holder, int position) {
         Map.Entry<String, List<String>> location = locations.get(position);
         holder.binding.tvProvinceName.setText(location.getKey());
-
         BusStationAdapter stationAdapter = new BusStationAdapter();
         holder.binding.rvStations.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext()));
         holder.binding.rvStations.setAdapter(stationAdapter);

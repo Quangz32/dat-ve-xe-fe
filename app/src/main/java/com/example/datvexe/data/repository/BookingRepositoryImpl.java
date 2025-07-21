@@ -4,11 +4,15 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.example.datvexe.data.mapper.BookingMapper;
+import com.example.datvexe.data.mapper.DiscountMapper;
 import com.example.datvexe.data.remote.api.service.BookingApiService;
 import com.example.datvexe.data.remote.dto.ApiResponse;
 import com.example.datvexe.data.remote.dto.BookingResponseDto;
+
 import com.example.datvexe.data.remote.dto.UserDto;
+import com.example.datvexe.data.remote.dto.DiscountDto;
 import com.example.datvexe.domain.model.BookingTrip;
+import com.example.datvexe.domain.model.Discount;
 import com.example.datvexe.domain.repository.BookingRepository;
 
 import java.util.List;
@@ -104,10 +108,34 @@ public class BookingRepositoryImpl implements BookingRepository {
         });
     }
 
+
     public void shutdown() {
         if (!backgroundExecutor.isShutdown()) {
             backgroundExecutor.shutdown();
         }
+    }
+
+
+    @Override
+    public void getDiscountsByUser(DiscountCallback callback) {
+        apiService.getDiscountsByUser().enqueue(new Callback<ApiResponse<List<DiscountDto>>>() {
+            @Override
+            public void onResponse(Call<ApiResponse<List<DiscountDto>>> call, Response<ApiResponse<List<DiscountDto>>> response) {
+                if (response.isSuccessful() && response.body() != null && response.body().getStatus() == 200) {
+                    List<Discount> discounts = response.body().getData().stream()
+                            .map(DiscountMapper::toDomainModel)
+                            .collect(java.util.stream.Collectors.toList());
+                    callback.onSuccess(discounts);
+                } else {
+                    callback.onError("Lỗi tải khuyến mãi");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse<List<DiscountDto>>> call, Throwable t) {
+                callback.onError(t.getMessage());
+            }
+        });
     }
 
 } 

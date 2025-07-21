@@ -49,6 +49,10 @@ public class AuthActivity extends AppCompatActivity {
         replaceFragment(new com.example.datvexe.presentation.screens.fragments.RegisterFragment());
     }
 
+    public void showForgotPasswordFragment() {
+        replaceFragment(new com.example.datvexe.presentation.screens.fragments.ForgotPasswordFragment());
+    }
+
     private void replaceFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment);

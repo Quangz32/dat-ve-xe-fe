@@ -2,9 +2,9 @@ package com.example.datvexe.data.remote.api.service;
 
 import com.example.datvexe.data.remote.dto.ApiResponse;
 import com.example.datvexe.data.remote.dto.BookingResponseDto;
-import com.example.datvexe.data.remote.dto.BookingRequestDto;
-import com.example.datvexe.data.remote.dto.UserDto;
-import retrofit2.http.Body;
+
+import com.example.datvexe.data.remote.dto.DiscountDto;
+
 
 import java.util.List;
 
@@ -22,5 +22,8 @@ public interface BookingApiService {
     @GET("booking/history/user/{userId}")
     Call<ApiResponse<List<BookingResponseDto>>> getBookingsHistoryByUserId(@Path("userId") String userId);
 
-   
+
+    @GET("booking/discount/user")
+    Call<ApiResponse<List<DiscountDto>>> getDiscountsByUser();
+
 } 
