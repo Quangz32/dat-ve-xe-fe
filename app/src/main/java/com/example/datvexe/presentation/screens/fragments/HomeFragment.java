@@ -18,13 +18,18 @@ import android.graphics.Rect;
 import com.example.datvexe.databinding.FragmentHomeBinding;
 import com.example.datvexe.presentation.screens.activities.MainActivity;
 import com.example.datvexe.presentation.viewmodel.HomeViewModel;
-import com.example.datvexe.presentation.adapter.LocationAdapter;
+import com.example.datvexe.presentation.adapter.PopularRouteAdapter;
+import com.example.datvexe.presentation.model.PopularRoute;
+import com.example.datvexe.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding viewBinding;
     private HomeViewModel homeViewModel;
-    private LocationAdapter locationAdapter;
+    private PopularRouteAdapter popularRouteAdapter;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -55,13 +60,11 @@ public class HomeFragment extends Fragment {
     }
 
     private void setupRecyclerView() {
-        locationAdapter = new LocationAdapter();
-        // Đổi sang GridLayoutManager 2 cột
+        popularRouteAdapter = new PopularRouteAdapter();
         viewBinding.rvPopularRoutes.setLayoutManager(
             new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false)
         );
-        // Thêm ItemDecoration căn đều
-        int spacing = 32; // px, tăng spacing cho rõ ràng
+        int spacing = 24; // spacing đẹp hơn
         int spanCount = 2;
         viewBinding.rvPopularRoutes.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
@@ -74,15 +77,34 @@ public class HomeFragment extends Fragment {
                 outRect.bottom = spacing / 2;
             }
         });
-        viewBinding.rvPopularRoutes.setAdapter(locationAdapter);
-        locationAdapter.setOnStationClickListener(stationName -> {
+        viewBinding.rvPopularRoutes.setAdapter(popularRouteAdapter);
+        popularRouteAdapter.setOnRouteClickListener(route -> {
             // TODO: Xử lý khi click vào tuyến phổ biến
         });
     }
 
     private void setupObservers() {
-        homeViewModel.getPopularRoutes().observe(getViewLifecycleOwner(), locations -> {
-            locationAdapter.setLocations(locations);
+        homeViewModel.getPopularRoutes().observe(getViewLifecycleOwner(), routes -> {
+            // Chuyển đổi sang List<PopularRoute>
+            List<PopularRoute> popularRoutes = new ArrayList<>();
+            for (Object dto : routes) {
+                // TODO: Chuyển đổi dto sang PopularRoute phù hợp với dữ liệu thực tế
+                // Ví dụ nếu dto là Map.Entry<String, List<String>> hoặc RouteDto, hãy sửa lại cho đúng
+                // Dưới đây là ví dụ mẫu, bạn cần sửa lại cho đúng với dữ liệu thực tế:
+                // String routeName = ...;
+                // String price = ...;
+                // String duration = ...;
+                // int bannerResId = R.drawable.banner2;
+                // popularRoutes.add(new PopularRoute(routeName, price, duration, bannerResId));
+            }
+            // Demo dữ liệu mẫu nếu chưa có dữ liệu thực tế:
+            if (popularRoutes.isEmpty()) {
+                popularRoutes.add(new PopularRoute("Hà Nội - Lào Cai", "Từ 485.000đ", "11h", R.drawable.banner2));
+                popularRoutes.add(new PopularRoute("Lào Cai - Sapa", "Từ 150.000đ", "2h", R.drawable.banner2));
+                popularRoutes.add(new PopularRoute("Hà Nội - Sapa", "Từ 500.000đ", "12h", R.drawable.banner2));
+                popularRoutes.add(new PopularRoute("Sapa - Hà Nội", "Từ 480.000đ", "10h", R.drawable.banner2));
+            }
+            popularRouteAdapter.setRoutes(popularRoutes);
         });
         homeViewModel.getIsLoading().observe(getViewLifecycleOwner(), isLoading -> {
             viewBinding.progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
