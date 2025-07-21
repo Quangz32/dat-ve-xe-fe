@@ -1,5 +1,6 @@
 package com.example.datvexe.presentation.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.fragment.app.Fragment;
 
 import com.example.datvexe.R;
+import com.example.datvexe.databinding.ItemBookingBinding;
 import com.example.datvexe.domain.model.BookingTrip;
 
 import java.text.NumberFormat;
@@ -58,10 +60,12 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
         private final TextView tvRoute;
         private final TextView tvSeats;
         private final TextView tvPrice;
-        private final TextView tvStatus;
+        private final TextView tvStatusSuccess;
+        private final TextView tvStatusError;
         private final TextView tvDate;
         private final TextView tvPaymentMethod;
         private final TextView tvUserName;
+
 
         public BookingViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -69,7 +73,8 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
             tvRoute = itemView.findViewById(R.id.tv_route);
             tvSeats = itemView.findViewById(R.id.tv_seats);
             tvPrice = itemView.findViewById(R.id.tv_price);
-            tvStatus = itemView.findViewById(R.id.tv_status);
+            tvStatusSuccess = itemView.findViewById(R.id.tv_status_success);
+            tvStatusError = itemView.findViewById(R.id.tv_status_error);
             tvDate = itemView.findViewById(R.id.tv_date);
             tvPaymentMethod = itemView.findViewById(R.id.tv_payment_method);
             tvUserName = itemView.findViewById(R.id.tv_user_name);
@@ -100,7 +105,18 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
             }
 
             // Hiển thị trạng thái
-            tvStatus.setText("Trạng thái: " + getStatusText(booking.getStatus()));
+            String status = booking.getStatus();
+//            Log.d("xxx", "bind: " + status);
+            if (status.equals("cancelled")){
+                tvStatusSuccess.setVisibility(View.GONE);
+                tvStatusError.setVisibility(View.VISIBLE);
+                tvStatusError.setText("Trạng thái: " + getStatusText(status));
+            } else {
+                tvStatusSuccess.setVisibility(View.VISIBLE);
+                tvStatusError.setVisibility(View.GONE);
+                tvStatusSuccess.setText("Trạng thái: " + getStatusText(status));
+            }
+//            tv
 
             // Hiển thị ngày giờ
             if (booking.getDepartureTime() != null) {
