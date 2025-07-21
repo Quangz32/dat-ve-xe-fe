@@ -1,35 +1,19 @@
 package com.example.datvexe.presentation.screens.fragments;
 
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import android.graphics.Rect;
 
 import com.example.datvexe.databinding.FragmentHomeBinding;
 import com.example.datvexe.presentation.screens.activities.MainActivity;
-import com.example.datvexe.presentation.viewmodel.HomeViewModel;
-import com.example.datvexe.presentation.adapter.PopularRouteAdapter;
-import com.example.datvexe.presentation.model.PopularRoute;
-import com.example.datvexe.R;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding viewBinding;
-    private HomeViewModel homeViewModel;
-    private PopularRouteAdapter popularRouteAdapter;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -48,93 +32,14 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         viewBinding = FragmentHomeBinding.inflate(inflater, container, false);
-        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
-
-        setupRecyclerView();
-        setupObservers();
         setupClickListeners();
-        setupSearchBox();
-
-        homeViewModel.fetchPopularRoutes();
         return viewBinding.getRoot();
-    }
-
-    private void setupRecyclerView() {
-        popularRouteAdapter = new PopularRouteAdapter();
-        viewBinding.rvPopularRoutes.setLayoutManager(
-            new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false)
-        );
-        int spacing = 24; // spacing đẹp hơn
-        int spanCount = 2;
-        viewBinding.rvPopularRoutes.addItemDecoration(new RecyclerView.ItemDecoration() {
-            @Override
-            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, RecyclerView parent, @NonNull RecyclerView.State state) {
-                int position = parent.getChildAdapterPosition(view);
-                int column = position % spanCount;
-                outRect.left = spacing - column * spacing / spanCount;
-                outRect.right = (column + 1) * spacing / spanCount;
-                outRect.top = spacing / 2;
-                outRect.bottom = spacing / 2;
-            }
-        });
-        viewBinding.rvPopularRoutes.setAdapter(popularRouteAdapter);
-        popularRouteAdapter.setOnRouteClickListener(route -> {
-            // TODO: Xử lý khi click vào tuyến phổ biến
-        });
-    }
-
-    private void setupObservers() {
-        homeViewModel.getPopularRoutes().observe(getViewLifecycleOwner(), routes -> {
-            // Chuyển đổi sang List<PopularRoute>
-            List<PopularRoute> popularRoutes = new ArrayList<>();
-            for (Object dto : routes) {
-                // TODO: Chuyển đổi dto sang PopularRoute phù hợp với dữ liệu thực tế
-                // Ví dụ nếu dto là Map.Entry<String, List<String>> hoặc RouteDto, hãy sửa lại cho đúng
-                // Dưới đây là ví dụ mẫu, bạn cần sửa lại cho đúng với dữ liệu thực tế:
-                // String routeName = ...;
-                // String price = ...;
-                // String duration = ...;
-                // int bannerResId = R.drawable.banner2;
-                // popularRoutes.add(new PopularRoute(routeName, price, duration, bannerResId));
-            }
-            // Demo dữ liệu mẫu nếu chưa có dữ liệu thực tế:
-            if (popularRoutes.isEmpty()) {
-                popularRoutes.add(new PopularRoute("Hà Nội - Lào Cai", "Từ 485.000đ", "11h", R.drawable.banner2));
-                popularRoutes.add(new PopularRoute("Lào Cai - Sapa", "Từ 150.000đ", "2h", R.drawable.banner2));
-                popularRoutes.add(new PopularRoute("Hà Nội - Sapa", "Từ 500.000đ", "12h", R.drawable.banner2));
-                popularRoutes.add(new PopularRoute("Sapa - Hà Nội", "Từ 480.000đ", "10h", R.drawable.banner2));
-            }
-            popularRouteAdapter.setRoutes(popularRoutes);
-        });
-        homeViewModel.getIsLoading().observe(getViewLifecycleOwner(), isLoading -> {
-            viewBinding.progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
-        });
     }
 
     private void setupClickListeners() {
         viewBinding.btnSearchTrip.setOnClickListener(v -> {
             MainActivity activity = (MainActivity) requireActivity();
             activity.navigateToFragment(new LocationTripFragment());
-        });
-    }
-
-    private void setupSearchBox() {
-        viewBinding.edtSearch.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                // TODO: Gửi query tìm kiếm sang ViewModel nếu cần
-                return true;
-            }
-            return false;
-        });
-        viewBinding.edtSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // TODO: Gửi query tìm kiếm sang ViewModel nếu cần
-            }
-            @Override
-            public void afterTextChanged(Editable s) {}
         });
     }
 

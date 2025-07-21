@@ -145,20 +145,4 @@
     <color name="date_selected_background">@color/coral</color>
     <color name="date_text_color">#1C1B1F</color>
     <color name="date_selected_text_color">#FFFFFF</color>
-    <color name="light_orange">#FFF3E0</color>
-    <color name="main_orange">#FF7043</color>
-    <color name="sao_viet_bg">#FFD1C1</color>
-    <color name="sao_viet_orange">#FF6F4D</color>
-    <color name="sao_viet_red">#E53935</color>
-    <color name="sao_viet_yellow">#FFD600</color>
-    <color name="sao_viet_gray_bg">#F5F5F5</color>
-    <color name="sao_viet_gray_icon">#BDBDBD</color>
-    <color name="sao_viet_gradient_light">#FFD1C1</color>
-    <color name="sao_viet_gradient_dark">#FF6F4D</color>
-    <color name="account_blue_light">#E3F0FF</color>
-    <color name="account_green_light">#E3FCEC</color>
-    <color name="account_pink_light">#FFE3EC</color>
-    <color name="account_yellow_light">#FFF7E3</color>
-    <color name="account_gray_icon">#BDBDBD</color>
-    <color name="teal_700">#018786</color>
 </resources>

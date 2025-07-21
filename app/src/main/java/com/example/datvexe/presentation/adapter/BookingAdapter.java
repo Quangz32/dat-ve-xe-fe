@@ -1,6 +1,5 @@
 package com.example.datvexe.presentation.adapter;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,10 +7,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.fragment.app.Fragment;
 
 import com.example.datvexe.R;
-import com.example.datvexe.databinding.ItemBookingBinding;
 import com.example.datvexe.domain.model.BookingTrip;
 
 import java.text.NumberFormat;
@@ -25,11 +22,6 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
     private final NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
     private List<BookingTrip> bookings = new ArrayList<>();
-    private final Fragment fragment;
-
-    public BookingAdapter(Fragment fragment) {
-        this.fragment = fragment;
-    }
 
     public void setBookings(List<BookingTrip> bookings) {
         this.bookings = bookings != null ? bookings : new ArrayList<>();
@@ -60,12 +52,10 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
         private final TextView tvRoute;
         private final TextView tvSeats;
         private final TextView tvPrice;
-        private final TextView tvStatusSuccess;
-        private final TextView tvStatusError;
+        private final TextView tvStatus;
         private final TextView tvDate;
         private final TextView tvPaymentMethod;
         private final TextView tvUserName;
-
 
         public BookingViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -73,8 +63,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
             tvRoute = itemView.findViewById(R.id.tv_route);
             tvSeats = itemView.findViewById(R.id.tv_seats);
             tvPrice = itemView.findViewById(R.id.tv_price);
-            tvStatusSuccess = itemView.findViewById(R.id.tv_status_success);
-            tvStatusError = itemView.findViewById(R.id.tv_status_error);
+            tvStatus = itemView.findViewById(R.id.tv_status);
             tvDate = itemView.findViewById(R.id.tv_date);
             tvPaymentMethod = itemView.findViewById(R.id.tv_payment_method);
             tvUserName = itemView.findViewById(R.id.tv_user_name);
@@ -105,18 +94,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
             }
 
             // Hiển thị trạng thái
-            String status = booking.getStatus();
-//            Log.d("xxx", "bind: " + status);
-            if (status.equals("cancelled")){
-                tvStatusSuccess.setVisibility(View.GONE);
-                tvStatusError.setVisibility(View.VISIBLE);
-                tvStatusError.setText("Trạng thái: " + getStatusText(status));
-            } else {
-                tvStatusSuccess.setVisibility(View.VISIBLE);
-                tvStatusError.setVisibility(View.GONE);
-                tvStatusSuccess.setText("Trạng thái: " + getStatusText(status));
-            }
-//            tv
+            tvStatus.setText("Trạng thái: " + getStatusText(booking.getStatus()));
 
             // Hiển thị ngày giờ
             if (booking.getDepartureTime() != null) {
@@ -134,21 +112,6 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
             } else {
                 tvUserName.setText("Khách hàng: N/A");
             }
-
-            // Sự kiện click mở BookingDetailFragment
-            itemView.setOnClickListener(v -> {
-                com.example.datvexe.presentation.screens.fragments.BookingDetailFragment fragmentDetail = new com.example.datvexe.presentation.screens.fragments.BookingDetailFragment();
-                android.os.Bundle bundle = new android.os.Bundle();
-                bundle.putString("booking_code", booking.getCode());
-                fragmentDetail.setArguments(bundle);
-                fragment.requireActivity().findViewById(com.example.datvexe.R.id.frame_layout).setVisibility(android.view.View.VISIBLE);
-                fragment.requireActivity().findViewById(com.example.datvexe.R.id.pager).setVisibility(android.view.View.GONE);
-                fragment.requireActivity().getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(com.example.datvexe.R.id.frame_layout, fragmentDetail)
-                        .addToBackStack(null)
-                        .commit();
-            });
         }
 
         private String getStatusText(String status) {

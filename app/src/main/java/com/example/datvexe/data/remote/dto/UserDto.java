@@ -18,6 +18,4 @@ public class UserDto {
     private String fullname;
 
     private String phone;
-
-    private Integer loyaltyPoints;
 } 

@@ -27,7 +27,7 @@ public class LocationBottomSheetFragment extends BottomSheetDialogFragment {
     private BottomSheetLocationBinding binding;
     private LocationAdapter adapter;
     private OnLocationSelectedListener listener;
-    private List<Map.Entry<String, List<String>>> groupedLocations;
+    private List<Map.Entry<String, List<String>>> originalLocations;
     private Map<String, BusStation> stationMap = new HashMap<>();
     private Map<String, List<BusStation>> pendingLocations;
 
@@ -93,28 +93,28 @@ public class LocationBottomSheetFragment extends BottomSheetDialogFragment {
     }
 
     private void filterLocations(String query) {
-        if (groupedLocations == null) return;
+        if (originalLocations == null) return;
 
         if (query.isEmpty()) {
-            adapter.setLocations(groupedLocations);
+            adapter.setLocations(originalLocations);
             return;
         }
 
         String lowercaseQuery = query.toLowerCase();
-        List<Map.Entry<String, List<String>>> filtered = new ArrayList<>();
-        for (Map.Entry<String, List<String>> entry : groupedLocations) {
-            String province = entry.getKey();
-            List<String> filteredStations = new ArrayList<>();
-            for (String station : entry.getValue()) {
-                if (station.toLowerCase().contains(lowercaseQuery)) {
-                    filteredStations.add(station);
-                }
-            }
-            if (!filteredStations.isEmpty() || province.toLowerCase().contains(lowercaseQuery)) {
-                filtered.add(new java.util.AbstractMap.SimpleEntry<>(province, filteredStations.isEmpty() ? entry.getValue() : filteredStations));
-            }
-        }
-        adapter.setLocations(filtered);
+        List<Map.Entry<String, List<String>>> filteredLocations = originalLocations.stream()
+                .map(entry -> {
+                    List<String> filteredStations = entry.getValue().stream()
+                            .filter(station -> station.toLowerCase().contains(lowercaseQuery))
+                            .collect(Collectors.toList());
+
+                    return !filteredStations.isEmpty() || entry.getKey().toLowerCase().contains(lowercaseQuery)
+                            ? new AbstractMap.SimpleEntry<>(entry.getKey(), filteredStations)
+                            : null;
+                })
+                .filter(entry -> entry != null && (!entry.getValue().isEmpty() || entry.getKey().toLowerCase().contains(lowercaseQuery)))
+                .collect(Collectors.toList());
+
+        adapter.setLocations(filteredLocations);
     }
 
     public void setLocations(Map<String, List<BusStation>> locations) {
@@ -127,9 +127,10 @@ public class LocationBottomSheetFragment extends BottomSheetDialogFragment {
     }
 
     private void setLocationsInternal(Map<String, List<BusStation>> locations) {
-        // Chuyển đổi sang group: tỉnh/thành -> danh sách tên bến xe, và lưu map tên -> BusStation
+        // Convert locations to the format needed by adapter and store original stations
         stationMap.clear();
-        List<Map.Entry<String, List<String>>> groupList = new ArrayList<>();
+        Map<String, List<String>> convertedLocations = new HashMap<>();
+        
         for (Map.Entry<String, List<BusStation>> entry : locations.entrySet()) {
             List<String> stationNames = new ArrayList<>();
             for (BusStation station : entry.getValue()) {
@@ -137,9 +138,10 @@ public class LocationBottomSheetFragment extends BottomSheetDialogFragment {
                 stationNames.add(stationName);
                 stationMap.put(stationName, station);
             }
-            groupList.add(new java.util.AbstractMap.SimpleEntry<>(entry.getKey(), stationNames));
+            convertedLocations.put(entry.getKey(), stationNames);
         }
-        groupedLocations = groupList;
-        adapter.setLocations(groupedLocations);
+
+        originalLocations = new ArrayList<>(convertedLocations.entrySet());
+        adapter.setLocations(originalLocations);
     }
 } 

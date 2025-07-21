@@ -11,9 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp"
-        android:background="@drawable/bg_item_booking"
-        >
+        android:padding="16dp">
 
         <TextView
             android:id="@+id/tv_booking_code"
@@ -40,6 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="Khách hàng: Luu Phuc An"
+            android:textColor="@android:color/darker_gray"
             android:textSize="12sp" />
 
         <TextView
@@ -48,6 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="Ghế: B2, B3, A3"
+            android:textColor="@android:color/darker_gray"
             android:textSize="12sp" />
 
         <TextView
@@ -56,6 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="Khởi hành: 04/03/2025 16:00"
+            android:textColor="@android:color/darker_gray"
             android:textSize="12sp" />
 
         <LinearLayout
@@ -75,22 +76,12 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tv_status_success"
+                android:id="@+id/tv_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/green"
+                android:background="@drawable/status_background"
                 android:padding="4dp"
                 android:text="Đã thanh toán"
-                android:textColor="@android:color/white"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/tv_status_error"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/red"
-                android:padding="4dp"
-                android:text="Đã huỷ"
                 android:textColor="@android:color/white"
                 android:textSize="12sp" />
 
@@ -102,6 +93,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="Thanh toán: VNPay"
+            android:textColor="@android:color/darker_gray"
             android:textSize="12sp" />
 
     </LinearLayout>

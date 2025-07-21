@@ -21,7 +21,7 @@ public class BookingMapper {
                 .user(dto.getUser() != null ? dto.getUser().getId() : null)
                 .busSchedule(dto.getBusSchedule() != null ? dto.getBusSchedule().getId() : null)
                 .surcharge(dto.getSurcharge() != null ? dto.getSurcharge() : 0L)
-                .totalPrice(dto.getTotalPrice()*1000)
+                .totalPrice(dto.getTotalPrice())
                 .seats(dto.getSeats())
                 .pickupLocation(dto.getPickupLocation())
                 .dropoffLocation(dto.getDropoffLocation())

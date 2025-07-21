@@ -78,7 +78,7 @@ public class BookingFragment extends Fragment {
     }
 
     private void setupRecyclerView() {
-        adapter = new BookingAdapter(this);
+        adapter = new BookingAdapter();
         viewBinding.rvBookings.setLayoutManager(new LinearLayoutManager(getContext()));
         viewBinding.rvBookings.setAdapter(adapter);
     }

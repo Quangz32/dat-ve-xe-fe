@@ -98,13 +98,6 @@ public class LoginFragment extends Fragment {
                 ((AuthActivity) getActivity()).showRegisterFragment();
             }
         });
-
-        // Click để chuyển sang ForgotPasswordFragment
-        viewBinding.tvForgotPassword.setOnClickListener(v -> {
-            if (getActivity() instanceof AuthActivity) {
-                ((AuthActivity) getActivity()).showForgotPasswordFragment();
-            }
-        });
     }
 
     @Override

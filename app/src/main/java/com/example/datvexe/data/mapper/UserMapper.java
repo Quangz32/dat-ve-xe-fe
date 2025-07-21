@@ -14,7 +14,6 @@ public class UserMapper {
                 .email(dto.getEmail())
                 .fullname(dto.getFullname())
                 .phone(dto.getPhone())
-                .loyaltyPoints(dto.getLoyaltyPoints())
                 .build();
     }
 }
