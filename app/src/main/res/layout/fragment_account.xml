@@ -115,15 +115,16 @@
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Loyalty" android:textStyle="bold" android:textSize="13sp" android:textColor="#222"/>
                     <TextView android:id="@+id/tvSilver" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" android:textColor="#BDBDBD" android:textSize="12sp"/>
                 </LinearLayout>
-                <!-- Bạn bè -->
+                <!-- Sao Việt -->
                 <LinearLayout
+                    android:id="@+id/btnNews"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:gravity="center">
-                    <ImageView android:layout_width="40dp" android:layout_height="40dp" android:background="@drawable/bg_circle_blue" android:src="@drawable/baseline_person_24" android:tint="#2196F3" android:padding="8dp"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Giới thiệu" android:textStyle="bold" android:textSize="13sp" android:textColor="#222"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Bạn bè" android:textColor="#BDBDBD" android:textSize="12sp"/>
+                    <ImageView android:layout_width="40dp" android:layout_height="40dp" android:background="@drawable/bg_circle_green" android:src="@drawable/baseline_notifications_24" android:tint="#4CAF50" android:padding="8dp"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Tin tức" android:textStyle="bold" android:textSize="13sp" android:textColor="#222"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Sao Việt" android:textColor="#BDBDBD" android:textSize="12sp"/>
                 </LinearLayout>
             </LinearLayout>
             <!-- Cột 2 -->
@@ -144,16 +145,16 @@
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Khuyến mãi" android:textStyle="bold" android:textSize="13sp" android:textColor="#222"/>
                     <TextView android:id="@+id/tvPromotion" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" android:textColor="#BDBDBD" android:textSize="12sp"/>
                 </LinearLayout>
-                <!-- Sao Việt -->
+                <!-- Câu hỏi thường gặp -->
                 <LinearLayout
-                    android:id="@+id/btnNews"
+                    android:id="@+id/btnFaq"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:gravity="center">
-                    <ImageView android:layout_width="40dp" android:layout_height="40dp" android:background="@drawable/bg_circle_green" android:src="@drawable/baseline_notifications_24" android:tint="#4CAF50" android:padding="8dp"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Tin tức" android:textStyle="bold" android:textSize="13sp" android:textColor="#222"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Sao Việt" android:textColor="#BDBDBD" android:textSize="12sp"/>
+                    <ImageView android:layout_width="40dp" android:layout_height="40dp" android:background="@drawable/bg_circle_blue" android:src="@drawable/baseline_info_24" android:tint="#2196F3" android:padding="5dp"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Giải đáp" android:textStyle="bold" android:textSize="13sp" android:textColor="#222"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Câu hỏi thường gặp" android:textColor="#BDBDBD" android:textSize="12sp"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
@@ -179,48 +180,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="0dp">
-
-            <!-- Thông tin Sao Việt -->
-            <LinearLayout
-                android:id="@+id/btnBusOperatorInfo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:padding="12dp"
-                android:background="@android:color/transparent">
-
-                <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:background="@drawable/bg_circle_blue"
-                    android:padding="4dp"
-                    android:src="@drawable/baseline_info_24"
-                    android:tint="#2196F3" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:layout_marginStart="12dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Thông tin Sao Việt"
-                        android:textColor="#222"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:src="@drawable/baseline_arrow_back_24"
-                    android:rotation="180"
-                    android:tint="#BDBDBD" />
-            </LinearLayout>
 
             <!-- Chat với quản trị viên -->
             <LinearLayout
@@ -306,6 +265,48 @@
                     android:tint="#BDBDBD" />
             </LinearLayout>
 
+            <!-- Thông tin Sao Việt -->
+            <LinearLayout
+                android:id="@+id/btnBusOperatorInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="12dp"
+                android:background="@android:color/transparent">
+
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:background="@drawable/bg_circle_blue"
+                    android:padding="4dp"
+                    android:src="@drawable/baseline_info_24"
+                    android:tint="#2196F3" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginStart="12dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Thông tin Sao Việt"
+                        android:textColor="#222"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/baseline_arrow_back_24"
+                    android:rotation="180"
+                    android:tint="#BDBDBD" />
+            </LinearLayout>
+
             <!-- Đăng xuất -->
             <LinearLayout
                 android:id="@+id/btnLogout"
@@ -336,48 +337,6 @@
                         android:layout_height="wrap_content"
                         android:text="Đăng xuất"
                         android:textColor="#FF4081"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:src="@drawable/baseline_arrow_back_24"
-                    android:rotation="180"
-                    android:tint="#BDBDBD" />
-            </LinearLayout>
-
-            <!-- Câu hỏi thường gặp -->
-            <LinearLayout
-                android:id="@+id/btnFaq"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:padding="12dp"
-                android:background="@android:color/transparent">
-
-                <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:background="@drawable/bg_circle_blue"
-                    android:padding="4dp"
-                    android:src="@drawable/baseline_info_24"
-                    android:tint="#1976D2" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:layout_marginStart="12dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Câu hỏi thường gặp"
-                        android:textColor="#222"
                         android:textSize="15sp"
                         android:textStyle="bold" />
                 </LinearLayout>
