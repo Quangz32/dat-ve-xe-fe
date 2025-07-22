@@ -438,4 +438,120 @@ public class SeatSelectedFragment extends Fragment {
             btnContinue.setTextColor(getResources().getColor(android.R.color.white));
         }
     }
+
+
+    private void setLoadingState(boolean isLoading) {
+        if (isLoading) {
+            btnContinue.setEnabled(false);
+            btnContinue.setText("Đang tải...");
+            btnContinue.setBackgroundColor(getResources().getColor(R.color.lightgrey));
+        } else {
+            btnContinue.setEnabled(!selectedSeats.isEmpty());
+            btnContinue.setText("Tiếp tục");
+            if (!selectedSeats.isEmpty()) {
+                btnContinue.setBackgroundColor(getResources().getColor(R.color.coral));
+                btnContinue.setTextColor(getResources().getColor(android.R.color.white));
+            } else {
+                btnContinue.setBackgroundColor(getResources().getColor(R.color.lightgrey));
+                btnContinue.setTextColor(getResources().getColor(android.R.color.white));
+            }
+        }
+    }
+
+    private void loadCustomerInfoAndNavigate() {
+        // Sử dụng ExecutorService để xử lý trong background
+        java.util.concurrent.ExecutorService executor = java.util.concurrent.Executors.newSingleThreadExecutor();
+        executor.execute(() -> {
+            try {
+                // Lấy thông tin khách hàng từ SharedPreferences
+                String customerInfo = getCustomerInfoFromSharedPreferences();
+
+                // Chuyển về main thread để update UI và navigate
+                requireActivity().runOnUiThread(() -> {
+                    try {
+                        setLoadingState(false);
+
+//                        if (customerInfo != null) {
+                            // Chuyển sang BookingConfirmFragment
+                            navigateToBookingConfirm();
+//                        } else {
+//                             Hiển thị lỗi nếu không có thông tin khách hàng
+//                            Toast.makeText(requireContext(), "Vui lòng đăng nhập để tiếp tục", Toast.LENGTH_SHORT).show();
+//                        }
+                    } catch (Exception e) {
+                        Log.e(TAG, "Error navigating to booking confirm: " + e.getMessage());
+                        setLoadingState(false);
+                        Toast.makeText(requireContext(), "Lỗi chuyển màn hình", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } catch (Exception e) {
+                Log.e(TAG, "Error loading customer info: " + e.getMessage());
+                requireActivity().runOnUiThread(() -> {
+                    setLoadingState(false);
+                    Toast.makeText(requireContext(), "Lỗi xử lý dữ liệu", Toast.LENGTH_SHORT).show();
+                });
+            } finally {
+                executor.shutdown();
+            }
+        });
+    }
+
+    private String getCustomerInfoFromSharedPreferences() {
+        try {
+            // Kiểm tra user đã đăng nhập chưa
+            if (!sharedPreferencesManager.isLoggedIn()) {
+                Log.d(TAG, "User not logged in");
+                return null;
+            }
+
+            // Lấy thông tin user từ SharedPreferences
+            String email = sharedPreferencesManager.getUserEmail();
+            String fullname = sharedPreferencesManager.getUserFullname();
+            String phone = sharedPreferencesManager.getUserPhone();
+            String address = sharedPreferencesManager.getUserAddress();
+            int loyaltyPoints = sharedPreferencesManager.getUserLoyaltyPoints();
+
+            // Kiểm tra xem có đủ thông tin cơ bản không
+            if (fullname.isEmpty() && phone.isEmpty()) {
+                Log.d(TAG, "User profile incomplete");
+                return null;
+            }
+
+            // Tạo JSON string với thông tin user
+            String customerInfo = String.format(
+                "{\"email\":\"%s\",\"fullname\":\"%s\",\"phone\":\"%s\",\"address\":\"%s\",\"loyaltyPoints\":%d}",
+                email, fullname, phone, address, loyaltyPoints
+            );
+
+            Log.d(TAG, "Customer info loaded from SharedPreferences: " + customerInfo);
+            return customerInfo;
+
+        } catch (Exception e) {
+            Log.e(TAG, "Error getting customer info from SharedPreferences: " + e.getMessage());
+            return null;
+        }
+    }
+
+    private void navigateToBookingConfirm() {
+        ArrayList<String> selectedSeatIds = new ArrayList<>();
+        for (Seat seat : selectedSeats) {
+            selectedSeatIds.add(seat.getId());
+        }
+
+        // Create and navigate to the RouteDetailFragment with current state
+            BookingConfirmFragment bookingConfirmFragment = BookingConfirmFragment.newInstance(
+                    schedule,
+                    busType,
+                    selectedSeatIds,
+                    totalPrice,
+                    currentFloor
+            );
+            ((MainActivity) requireActivity()).navigateToFragment(bookingConfirmFragment);
+        
+    }
+
+    private String formatPrice(int price) {
+        java.text.NumberFormat formatter = java.text.NumberFormat.getNumberInstance(new java.util.Locale("vi", "VN"));
+        return formatter.format(price);
+    }
 } 
